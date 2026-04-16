@@ -1506,6 +1506,20 @@
       margin-bottom: 8px; line-height: 1;
     }
     .res-tl-num .ac { color: var(--green); }
+    .res-tl-ball {
+      position: absolute;
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      background: var(--navy);
+      z-index: 3;
+      top: 21px; /* centra sobre la línea (28px - 7px) */
+      left: 0;
+      transform: translateX(-50%);
+      opacity: 0;
+      transform-origin: center bottom;
+      transition: background 0.4s ease;
+      pointer-events: none;
+    }
     .res-tl-desc {
       font-size: 13px; font-weight: 300;
       color: var(--muted); line-height: 1.65;
@@ -2003,6 +2017,94 @@
       .nos-cred { padding: 40px 20px; }
     }
 
+    /* ─── INTRO CURTAIN ─── */
+    #intro-curtain {
+      position: fixed; inset: 0;
+      background: var(--navy);
+      z-index: 9999;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none;
+      animation: curtainLift 0.9s cubic-bezier(0.76, 0, 0.24, 1) 1.4s both;
+    }
+    @keyframes curtainLift {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-100%); }
+    }
+    .curtain-inner {
+      display: flex; flex-direction: column;
+      align-items: center; gap: 16px;
+    }
+    .curtain-logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      color: #fff;
+      overflow: hidden;
+    }
+    .curtain-logo-inner {
+      display: inline-block;
+      animation: curtainWordIn 0.7s var(--ease) 0.1s both;
+    }
+    .curtain-logo span { color: var(--green); }
+    .curtain-sub {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.4em; text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      animation: curtainWordIn 0.6s var(--ease) 0.3s both;
+    }
+    .curtain-line {
+      width: 0; height: 1px;
+      background: var(--green);
+      animation: curtainLineIn 0.8s var(--ease) 0.5s both;
+    }
+    @keyframes curtainWordIn {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes curtainLineIn {
+      from { width: 0; opacity: 0; }
+      to   { width: 80px; opacity: 1; }
+    }
+
+    /* ─── CUSTOM CURSOR ─── */
+    #cursor-dot {
+      position: fixed; border-radius: 50%;
+      pointer-events: none; z-index: 10000;
+      transform: translate(-50%, -50%);
+      top: 0; left: 0;
+      width: 6px; height: 6px;
+      background: #fff;
+      mix-blend-mode: difference;
+      transition: width 0.2s var(--ease), height 0.2s var(--ease), opacity 0.3s;
+    }
+    #cursor-ring {
+      position: fixed; border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      top: 0; left: 0;
+      width: 36px; height: 36px;
+      border: 1px solid #fff;
+      mix-blend-mode: difference;
+      transition: width 0.35s var(--ease), height 0.35s var(--ease), opacity 0.3s;
+    }
+    body.cursor-hover #cursor-dot {
+      width: 10px; height: 10px;
+    }
+    body.cursor-hover #cursor-ring {
+      width: 58px; height: 58px;
+    }
+    body.cursor-clicking #cursor-dot {
+      transform: translate(-50%, -50%) scale(0.5);
+    }
+    body.cursor-clicking #cursor-ring {
+      transform: translate(-50%, -50%) scale(0.8);
+    }
+    @media (hover: none), (pointer: coarse) {
+      #cursor-dot, #cursor-ring { display: none; }
+    }
+
     /* ─── REDUCED MOTION ─── */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -2051,6 +2153,21 @@
   </style>
 </head>
 <body>
+
+  <!-- ── Intro curtain ── -->
+  <div id="intro-curtain" aria-hidden="true">
+    <div class="curtain-inner">
+      <div class="curtain-line"></div>
+      <div class="curtain-logo">
+        <span class="curtain-logo-inner">Morphos<span> Marketing</span></span>
+      </div>
+      <div class="curtain-sub">Marketing B2B · Industrial · México</div>
+    </div>
+  </div>
+
+  <!-- ── Custom cursor (desktop only) ── -->
+  <div id="cursor-dot"></div>
+  <div id="cursor-ring"></div>
 
   <a href="#main-content" class="skip-link">Ir al contenido principal</a>
 
@@ -2804,6 +2921,7 @@
           <h2 class="f-h2 c-navy">Cómo se construye<br>un canal de leads.</h2>
         </div>
         <div class="res-tl-grid">
+          <div class="res-tl-ball" aria-hidden="true"></div>
           <div class="res-tl-item reveal">
             <div class="res-tl-dot"></div>
             <div class="res-tl-period">Punto de partida</div>
@@ -3340,6 +3458,116 @@
     closeBtn.addEventListener('click', closeModal);
     overlay.addEventListener('click', closeModal);
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    // ── Custom cursor
+    (function() {
+      if (!window.matchMedia('(hover: hover)').matches) return;
+      const dot = document.getElementById('cursor-dot');
+      const ring = document.getElementById('cursor-ring');
+      if (!dot || !ring) return;
+      document.body.style.cursor = 'none';
+      let rx = 0, ry = 0, mx = 0, my = 0;
+      document.addEventListener('mousemove', e => {
+        mx = e.clientX; my = e.clientY;
+        dot.style.left = mx + 'px';
+        dot.style.top  = my + 'px';
+      });
+      document.addEventListener('mousedown', () => document.body.classList.add('cursor-clicking'));
+      document.addEventListener('mouseup',   () => document.body.classList.remove('cursor-clicking'));
+      document.addEventListener('mouseover', e => {
+        const interactive = e.target.closest('a, button, [data-page], input, label, select');
+        document.body.classList.toggle('cursor-hover', !!interactive);
+      });
+      (function animRing() {
+        rx += (mx - rx) * 0.16;
+        ry += (my - ry) * 0.16;
+        ring.style.left = rx + 'px';
+        ring.style.top  = ry + 'px';
+        requestAnimationFrame(animRing);
+      })();
+    })();
+
+    // ── Timeline ball animation
+    (function() {
+      const grid = document.querySelector('.res-tl-grid');
+      const ball = document.querySelector('.res-tl-ball');
+      if (!grid || !ball) return;
+
+      let animated = false;
+
+      function getDotPositions() {
+        const gridRect = grid.getBoundingClientRect();
+        return Array.from(grid.querySelectorAll('.res-tl-dot')).map(dot => {
+          const r = dot.getBoundingClientRect();
+          return r.left - gridRect.left + r.width / 2;
+        });
+      }
+
+      function animateBall() {
+        if (animated) return;
+        animated = true;
+
+        const positions = getDotPositions();
+        const lineY = 21 + 7; // top + half-height = center of ball on line
+        ball.style.opacity = '1';
+        ball.style.left = positions[0] + 'px';
+
+        let idx = 0;
+
+        function jumpTo(fromX, toX, onDone) {
+          const arcH  = -18;          // arco hacia arriba
+          const dur   = 620;
+          const t0    = performance.now();
+
+          function step(now) {
+            const t  = Math.min((now - t0) / dur, 1);
+            // ease-in-out cubic
+            const e  = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+            const x  = fromX + (toX - fromX) * e;
+            // arco parabólico
+            const dy = arcH * Math.sin(t * Math.PI);
+
+            // squish al aterrizar (último 18% del recorrido)
+            let sy = 1, sx = 1;
+            if (t > 0.82) {
+              const lp = (t - 0.82) / 0.18;
+              sy = 1 - Math.sin(lp * Math.PI) * 0.38;
+              sx = 1 + Math.sin(lp * Math.PI) * 0.28;
+            }
+
+            ball.style.left      = x  + 'px';
+            ball.style.marginTop = dy + 'px';
+            ball.style.transform = `translateX(-50%) scaleY(${sy}) scaleX(${sx})`;
+
+            if (t < 1) requestAnimationFrame(step);
+            else if (onDone) onDone();
+          }
+          requestAnimationFrame(step);
+        }
+
+        function next() {
+          idx++;
+          if (idx >= positions.length) return;
+          if (idx === positions.length - 1) {
+            setTimeout(() => { ball.style.background = 'var(--green)'; }, 80);
+          }
+          jumpTo(positions[idx - 1], positions[idx], () => {
+            setTimeout(next, idx < positions.length - 1 ? 180 : 0);
+          });
+        }
+
+        setTimeout(next, 350);
+      }
+
+      const tlObs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) {
+          animateBall();
+          tlObs.unobserve(grid);
+        }
+      }, { threshold: 0.35 });
+
+      tlObs.observe(grid);
+    })();
 
     // ── SPA Navigation
     function showPage(pageId) {
