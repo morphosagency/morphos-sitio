@@ -202,6 +202,73 @@
       color: var(--white) !important;
     }
 
+    /* ─── MOBILE MENU ─── */
+    .nav-burger {
+      display: none;
+      flex-direction: column; justify-content: center; gap: 7px;
+      width: 44px; height: 44px;
+      margin-right: -10px; padding: 10px;
+      background: none; border: none; cursor: pointer;
+      color: var(--white);
+      transition: color 0.3s ease;
+      z-index: 210;
+    }
+    nav.scrolled .nav-burger { color: var(--navy); }
+    .nav-burger span {
+      display: block; width: 24px; height: 2px;
+      background: currentColor;
+      transition: transform 0.35s var(--ease), opacity 0.25s ease;
+    }
+    body.menu-open .nav-burger span:nth-child(1) { transform: translateY(4.5px) rotate(45deg); }
+    body.menu-open .nav-burger span:nth-child(2) { transform: translateY(-4.5px) rotate(-45deg); }
+    body.menu-open nav {
+      background: transparent !important;
+      box-shadow: none !important;
+      backdrop-filter: none !important;
+    }
+    body.menu-open .logo, body.menu-open .nav-burger { color: var(--white) !important; }
+
+    .mmenu {
+      position: fixed; inset: 0; z-index: 150;
+      background: var(--navy);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 96px 32px 48px;
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.35s ease, visibility 0.35s ease;
+    }
+    body.menu-open .mmenu { opacity: 1; visibility: visible; }
+    .mmenu-links { margin-bottom: 40px; }
+    .mmenu-links a {
+      display: block;
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(32px, 9vw, 44px);
+      font-weight: 800; letter-spacing: -0.03em;
+      line-height: 1.0;
+      color: var(--white);
+      padding: 14px 0;
+      cursor: pointer;
+    }
+    .mmenu-links a:active { color: var(--green); }
+    .mmenu-cta {
+      display: inline-flex; align-items: center; justify-content: center;
+      align-self: flex-start;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 18px 32px;
+      background: var(--green); color: var(--white);
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .mmenu-foot {
+      position: absolute; bottom: 40px; left: 32px; right: 32px;
+      font-size: 13px; font-weight: 300;
+      color: rgba(255,255,255,0.35);
+      line-height: 1.8;
+    }
+    .mmenu-foot a { color: rgba(255,255,255,0.6); }
+    @media (min-width: 769px) { .mmenu { display: none; } }
+
     /* ─── SPA PAGES ─── */
     .page { display: none; }
     .page.active { display: block; animation: pageFadeIn 0.4s var(--ease) both; }
@@ -2179,6 +2246,7 @@
     }
     @media (max-width: 768px) {
       .nav-links { display: none; }
+      .nav-burger { display: flex; }
       .hero-body { padding: 0 24px 64px; padding-top: 120px; }
       .hero-badge { display: none; }
       .wrap, .wrap--sm { padding: 0 24px; }
@@ -2225,8 +2293,25 @@
         <li><a data-page="page-nosotros">Nosotros</a></li>
         <li><a data-page="page-agenda" class="nav-cta-btn">Agenda tu llamada</a></li>
       </ul>
+      <button class="nav-burger" id="navBurger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+        <span></span><span></span>
+      </button>
     </div>
   </nav>
+
+  <!-- ── Mobile menu overlay ── -->
+  <div class="mmenu" id="mobileMenu" aria-hidden="true">
+    <ul class="mmenu-links">
+      <li><a data-page="page-servicios">Servicios</a></li>
+      <li><a data-page="page-resultados">Resultados</a></li>
+      <li><a data-page="page-nosotros">Nosotros</a></li>
+    </ul>
+    <a data-page="page-agenda" class="mmenu-cta">Agenda tu llamada&nbsp;&nbsp;→</a>
+    <div class="mmenu-foot">
+      <a href="mailto:info@morphosagency.com">info@morphosagency.com</a><br>
+      Marketing B2B · Industrial · México
+    </div>
+  </div>
 
   <!-- ════════════════════════════════════════════
        PAGE: HOME
@@ -3755,11 +3840,43 @@
       }, 50);
     }
 
+    // ── Mobile menu
+    const burger = document.getElementById('navBurger');
+    const mmenu = document.getElementById('mobileMenu');
+
+    function toggleMenu(force) {
+      const open = force !== undefined ? force : !document.body.classList.contains('menu-open');
+      document.body.classList.toggle('menu-open', open);
+      burger.setAttribute('aria-expanded', open);
+      mmenu.setAttribute('aria-hidden', !open);
+      document.body.style.overflow = open ? 'hidden' : '';
+      if (GSAP_ON) {
+        if (open) {
+          gsap.timeline()
+            .fromTo(mmenu, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, ease: 'power2.out' })
+            .fromTo('.mmenu-links li',
+              { y: 36, autoAlpha: 0 },
+              { y: 0, autoAlpha: 1, stagger: 0.07, duration: 0.5, ease: 'power3.out' }, 0.08)
+            .fromTo(['.mmenu-cta', '.mmenu-foot'],
+              { y: 22, autoAlpha: 0 },
+              { y: 0, autoAlpha: 1, stagger: 0.07, duration: 0.45, ease: 'power3.out' }, 0.3);
+        } else {
+          gsap.to(mmenu, { autoAlpha: 0, duration: 0.25, ease: 'power2.in' });
+        }
+      }
+    }
+
+    burger.addEventListener('click', () => toggleMenu());
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.body.classList.contains('menu-open')) toggleMenu(false);
+    });
+
     // ── Event delegation for all [data-page] elements
     document.addEventListener('click', e => {
       const el = e.target.closest('[data-page]');
       if (el) {
         e.preventDefault();
+        if (document.body.classList.contains('menu-open')) toggleMenu(false);
         showPage(el.dataset.page);
       }
     });
