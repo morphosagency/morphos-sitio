@@ -3939,25 +3939,36 @@
     });
   </script>
 
-<!-- Morphos · Eventos de conversión GA4 -->
+<!-- Morphos · Eventos GA4 (sitio SPA con data-page) -->
 <script>
 (function () {
   function ev(name, params) { if (typeof gtag === 'function') gtag('event', name, params || {}); }
 
-  // Conversión de oro: reservó una llamada en Calendly
+  // Conversión de oro: reservó una llamada en el widget de Calendly
   window.addEventListener('message', function (e) {
     if (e.data && typeof e.data.event === 'string' && e.data.event === 'calendly.event_scheduled') {
       ev('generate_lead', { method: 'calendly', value: 1, currency: 'MXN' });
     }
   });
 
-  // Micro-conversiones: clic en CTA de agenda (Calendly) y clic en email
   document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('a');
-    if (!a) return;
-    var href = a.getAttribute('href') || '';
-    if (href.indexOf('calendly.com') !== -1) ev('cta_agenda_click', { link_url: href });
-    else if (href.indexOf('mailto:') === 0) ev('email_click', { email: href.replace('mailto:', '') });
+    var el = e.target.closest && e.target.closest('a, button');
+    if (!el) return;
+
+    // Navegación SPA (data-page) → vista de página virtual + intent de agenda
+    var page = el.getAttribute('data-page');
+    if (page) {
+      var slug = page.replace(/^page-/, '');
+      ev('page_view', {
+        page_title: 'Morphos · ' + slug,
+        page_location: location.origin + '/#' + slug
+      });
+      if (page === 'page-agenda') ev('cta_agenda_click', { source: 'cta' });
+    }
+
+    // Clic en email
+    var href = el.getAttribute('href') || '';
+    if (href.indexOf('mailto:') === 0) ev('email_click', { email: href.replace('mailto:', '') });
   }, true);
 })();
 </script>
