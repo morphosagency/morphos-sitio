@@ -1,0 +1,19 @@
+---
+const links = [
+  { href: '/servicios/', label: 'Servicios' },
+  { href: '/metodologia/', label: 'Resultados' },
+  { href: '/nosotros/', label: 'Nosotros' },
+];
+---
+<div class="mmenu" id="mobileMenu" aria-hidden="true">
+  <ul class="mmenu-links">
+    {links.map((l) => (
+      <li><a href={l.href}>{l.label}</a></li>
+    ))}
+  </ul>
+  <a href="/agenda/" class="mmenu-cta">Agenda tu llamada&nbsp;&nbsp;→</a>
+  <div class="mmenu-foot">
+    <a href="mailto:info@morphosagency.com">info@morphosagency.com</a><br>
+    Marketing B2B · Industrial · México
+  </div>
+</div>

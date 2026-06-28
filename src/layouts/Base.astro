@@ -1,0 +1,478 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import Curtain from '../components/Curtain.astro';
+import Cursor from '../components/Cursor.astro';
+import Nav from '../components/Nav.astro';
+import MobileMenu from '../components/MobileMenu.astro';
+import Footer from '../components/Footer.astro';
+import StepModal from '../components/StepModal.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonical: string;
+  ogImage?: string;
+}
+
+const { title, description, canonical, ogImage = 'https://www.morphosagency.com/firma-logo.gif' } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Analytics 4 (gtag.js) -->
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-EY41KCDH6E"></script>
+  <script is:inline>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    // send_page_view:false → el page_view se dispara manualmente en cada astro:page-load
+    gtag('config', 'G-EY41KCDH6E', { send_page_view: false });
+  </script>
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+
+  <!-- SEO: canonical + indexación -->
+  <link rel="canonical" href={canonical} />
+  <meta name="robots" content="index, follow, max-image-preview:large" />
+  <meta name="theme-color" content="#0d1b2a" />
+
+  <!-- Open Graph (LinkedIn / Facebook) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Morphos Marketing" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:locale" content="es_MX" />
+  <meta property="og:image" content={ogImage} />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  <!-- Schema.org: ProfessionalService / LocalBusiness -->
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "@id": "https://www.morphosagency.com/#organization",
+    "name": "Morphos Marketing",
+    "url": "https://www.morphosagency.com/",
+    "image": "https://www.morphosagency.com/firma-logo.gif",
+    "description": "Estrategia y ejecución de marketing B2B para empresas industriales en México. Google Ads, Meta Ads, SEO. Sin microgestión.",
+    "telephone": "+528132747842",
+    "email": "info@morphosagency.com",
+    "priceRange": "$$$",
+    "areaServed": { "@type": "Country", "name": "México" },
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Monterrey",
+      "addressRegion": "Nuevo León",
+      "addressCountry": "MX"
+    },
+    "sameAs": ["https://www.linkedin.com/company/morphos-marketing"]
+  })} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+
+  <ClientRouter />
+</head>
+<body>
+
+  <Curtain />
+  <Cursor />
+
+  <a href="#main-content" class="skip-link">Ir al contenido principal</a>
+
+  <Nav />
+  <MobileMenu />
+
+  <slot />
+
+  <Footer />
+  <StepModal />
+
+  <!-- GSAP 3.13 (motion premium — fallback automático a CSS/IO si el CDN falla) -->
+  <script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script is:inline src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+
+  <script>
+    // ════════════════════════════════════════════════════════════
+    //  Morphos — init unificado para Astro + View Transitions
+    //  Globales (cursor, GSAP, listeners de document) → una sola vez.
+    //  Por página (reveals, hero, FAQ, modal, timeline) → en cada astro:page-load.
+    // ════════════════════════════════════════════════════════════
+    let _once = false;
+    let GSAP_ON = false;
+    let curNav, curHero, curHeroBody, curHeroBadge;
+    let revealObserver, counterObserver;
+    let stFX = [];
+
+    function ev(name, params) {
+      if (typeof window.gtag === 'function') window.gtag('event', name, params || {});
+    }
+
+    function animateCounter(el, target, duration = 1800) {
+      let start = null;
+      const step = (ts) => {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / duration, 1);
+        const e = 1 - Math.pow(1 - p, 4);
+        el.textContent = Math.floor(e * target);
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = target;
+      };
+      requestAnimationFrame(step);
+    }
+
+    // ── Modal de pasos (queries frescas; los nodos se recrean por navegación)
+    const stepData = {
+      1: {
+        step: '01 — Diagnóstico',
+        title: '¿Qué auditamos exactamente?',
+        items: [
+          { icon: '◆', title: 'Presencia digital y sitio web', desc: 'Velocidad, SEO técnico, conversiones configuradas, experiencia móvil y mensajería.' },
+          { icon: '◆', title: 'Google Ads (si existe la cuenta)', desc: 'Estructura de campañas, palabras clave, tipos de concordancia, pujas y tracking de conversiones.' },
+          { icon: '◆', title: 'Meta Ads y Pixel', desc: 'Campañas activas, audiencias, creativos, estado del Pixel y CAPI. Si no hay cuenta, partimos de cero.' },
+          { icon: '◆', title: 'Analytics y datos', desc: 'GA4, embudo de conversión, atribución, datos históricos. Si el tracking está roto, eso es prioridad 1.' },
+          { icon: '◆', title: 'Competencia digital', desc: 'Qué canales usan, qué keywords rankean, cómo se posicionan. Para diferenciarte necesitas saber dónde están ellos.' },
+        ],
+        result: 'Recibes un documento de diagnóstico con hallazgos concretos, prioridades ordenadas, y las oportunidades más rápidas de aprovechar.'
+      },
+      2: {
+        step: '02 — Estrategia',
+        title: 'Un plan que conecta con tu negocio.',
+        items: [
+          { icon: '◆', title: 'Canales prioritarios', desc: 'No todos los canales son iguales para tu industria. Definimos dónde está tu comprador y cuál tiene el mejor retorno en tu caso.' },
+          { icon: '◆', title: 'Distribución de presupuesto', desc: 'Google Ads, Meta Ads, SEO — cuánto a cada canal y por qué, basado en tu mercado y objetivos, no en suposiciones.' },
+          { icon: '◆', title: 'Objetivos y KPIs reales', desc: 'Leads mensuales, CPL objetivo, calidad de leads, pipeline generado. Sin métricas de vanidad.' },
+          { icon: '◆', title: 'Plan de 90 días', desc: 'Mes 1: infraestructura y quick wins. Mes 2: primeras campañas con data real. Mes 3: escalar lo que funciona.' },
+          { icon: '◆', title: 'Todo aprobado antes de ejecutar', desc: 'No movemos un peso sin que estés alineado con la estrategia. La ejecución sin alineación es dinero en riesgo.' },
+        ],
+        result: 'Recibes el documento estratégico completo + roadmap de ejecución de 90 días con acciones concretas por semana.'
+      },
+      3: {
+        step: '03 — Ejecución',
+        title: 'Ejecutamos, medimos y ajustamos.',
+        items: [
+          { icon: '◆', title: 'Campañas configuradas desde cero correctamente', desc: 'Tracking verificado antes de lanzar. Nunca activamos una campaña sin confirmar que las conversiones se están registrando.' },
+          { icon: '◆', title: 'Optimización semanal, no mensual', desc: 'Revisamos performance cada semana. Si algo no funciona, lo ajustamos antes de que cueste demasiado — no esperamos al reporte.' },
+          { icon: '◆', title: 'Creativos y copy que convierten', desc: 'Los anuncios que producimos hablan el idioma de tu comprador industrial. No son genéricos ni de template.' },
+          { icon: '◆', title: 'Alertas proactivas', desc: 'Si detectamos algo que necesita atención antes del reporte, te lo comunicamos ese mismo día. Sin sorpresas.' },
+          { icon: '◆', title: 'Reporte mensual con narrativa', desc: 'No solo números — qué pasó, por qué, qué aprendimos, y qué sigue. Siempre orientado a negocio.' },
+        ],
+        result: 'Pipeline generado y CPL sostenible para tu ticket de venta. Tú te enfocas en operar — nosotros en que los compradores correctos te encuentren.'
+      }
+    };
+
+    function openModal(stepNum) {
+      const modal = document.getElementById('stepModal');
+      const modalContent = document.getElementById('stepModalContent');
+      if (!modal || !modalContent) return;
+      const d = stepData[stepNum];
+      if (!d) return;
+      const items = d.items.map(i => `
+        <li>
+          <span class="icon">${i.icon}</span>
+          <div><strong>${i.title}</strong>${i.desc}</div>
+        </li>`).join('');
+      modalContent.innerHTML = `
+        <div class="smodal-step">${d.step}</div>
+        <div class="smodal-title">${d.title}</div>
+        <div class="smodal-div"></div>
+        <ul class="smodal-list">${items}</ul>
+        <div class="smodal-result">
+          <span>Resultado</span>
+          <p>${d.result}</p>
+        </div>`;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('stepModal');
+      if (!modal) return;
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    function toggleMenu(force) {
+      const burger = document.getElementById('navBurger');
+      const mmenu = document.getElementById('mobileMenu');
+      if (!burger || !mmenu) return;
+      const open = force !== undefined ? force : !document.body.classList.contains('menu-open');
+      document.body.classList.toggle('menu-open', open);
+      burger.setAttribute('aria-expanded', String(open));
+      mmenu.setAttribute('aria-hidden', String(!open));
+      document.body.style.overflow = open ? 'hidden' : '';
+      if (GSAP_ON) {
+        if (open) {
+          window.gsap.timeline()
+            .fromTo(mmenu, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.3, ease: 'power2.out' })
+            .fromTo('.mmenu-links li', { y: 36, autoAlpha: 0 }, { y: 0, autoAlpha: 1, stagger: 0.07, duration: 0.5, ease: 'power3.out' }, 0.08)
+            .fromTo(['.mmenu-cta', '.mmenu-foot'], { y: 22, autoAlpha: 0 }, { y: 0, autoAlpha: 1, stagger: 0.07, duration: 0.45, ease: 'power3.out' }, 0.3);
+        } else {
+          window.gsap.to(mmenu, { autoAlpha: 0, duration: 0.25, ease: 'power2.in' });
+        }
+      }
+    }
+
+    function initScrollFX(scope) {
+      if (!GSAP_ON) return;
+      const reveals = scope.querySelectorAll('.reveal');
+      if (reveals.length) {
+        window.gsap.set(reveals, { opacity: 0, y: 32 });
+        stFX = stFX.concat(window.ScrollTrigger.batch(reveals, {
+          start: 'top 88%', once: true,
+          onEnter: batch => window.gsap.to(batch, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.09, overwrite: true })
+        }));
+      }
+      scope.querySelectorAll('.counter').forEach(el => {
+        const target = parseInt(el.dataset.target);
+        el.textContent = '0';
+        stFX.push(window.ScrollTrigger.create({
+          trigger: el, start: 'top 85%', once: true,
+          onEnter: () => {
+            const n = { v: 0 };
+            window.gsap.to(n, { v: target, duration: 1.6, ease: 'power2.out', onUpdate: () => { el.textContent = Math.round(n.v); } });
+          }
+        }));
+      });
+      window.ScrollTrigger.refresh();
+    }
+
+    function initFAQ() {
+      document.querySelectorAll('.faq-q').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = btn.closest('.faq-item');
+          const isOpen = item.classList.contains('open');
+          document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+          document.querySelectorAll('.faq-q').forEach(b => b.setAttribute('aria-expanded', 'false'));
+          if (!isOpen) { item.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); }
+        });
+      });
+    }
+
+    function initTimelineBall() {
+      const grid = document.querySelector('.res-tl-grid');
+      const ball = document.querySelector('.res-tl-ball');
+      if (!grid || !ball) return;
+      let animated = false;
+
+      function getDotPositions() {
+        const gridRect = grid.getBoundingClientRect();
+        return Array.from(grid.querySelectorAll('.res-tl-dot')).map(dot => {
+          const r = dot.getBoundingClientRect();
+          return r.left - gridRect.left + r.width / 2;
+        });
+      }
+
+      function animateBall() {
+        if (animated) return;
+        animated = true;
+        const positions = getDotPositions();
+        ball.style.opacity = '1';
+        ball.style.left = positions[0] + 'px';
+        let idx = 0;
+
+        function jumpTo(fromX, toX, onDone) {
+          const arcH = -18, dur = 620, t0 = performance.now();
+          function step(now) {
+            const t = Math.min((now - t0) / dur, 1);
+            const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+            const x = fromX + (toX - fromX) * e;
+            const dy = arcH * Math.sin(t * Math.PI);
+            let sy = 1, sx = 1;
+            if (t > 0.82) {
+              const lp = (t - 0.82) / 0.18;
+              sy = 1 - Math.sin(lp * Math.PI) * 0.38;
+              sx = 1 + Math.sin(lp * Math.PI) * 0.28;
+            }
+            ball.style.left = x + 'px';
+            ball.style.marginTop = dy + 'px';
+            ball.style.transform = `translateX(-50%) scaleY(${sy}) scaleX(${sx})`;
+            if (t < 1) requestAnimationFrame(step);
+            else if (onDone) onDone();
+          }
+          requestAnimationFrame(step);
+        }
+
+        function next() {
+          idx++;
+          if (idx >= positions.length) return;
+          if (idx === positions.length - 1) {
+            setTimeout(() => { ball.style.background = 'var(--green)'; }, 80);
+          }
+          jumpTo(positions[idx - 1], positions[idx], () => {
+            setTimeout(next, idx < positions.length - 1 ? 180 : 0);
+          });
+        }
+        setTimeout(next, 350);
+      }
+
+      const tlObs = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting) { animateBall(); tlObs.unobserve(grid); }
+      }, { threshold: 0.35 });
+      tlObs.observe(grid);
+    }
+
+    // ── Setup global (una sola vez) ──
+    function oneTimeInit() {
+      if (_once) return;
+      _once = true;
+
+      GSAP_ON = !!(window.gsap && window.ScrollTrigger && window.SplitText)
+        && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (GSAP_ON) {
+        window.gsap.registerPlugin(window.ScrollTrigger, window.SplitText);
+        document.documentElement.classList.add('gsap');
+      }
+
+      revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+      counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target, parseInt(entry.target.dataset.target));
+            counterObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      // Scroll: nav scrolled + parallax del hero (refs de la página activa)
+      window.addEventListener('scroll', () => {
+        const sy = window.scrollY;
+        if (curNav) curNav.classList.toggle('scrolled', sy > 80);
+        if (curHero && sy < curHero.offsetHeight) {
+          if (curHeroBody) curHeroBody.style.transform = `translateY(${sy * 0.15}px)`;
+          if (curHeroBadge) curHeroBadge.style.transform = `translateY(${sy * 0.08}px)`;
+        } else if (!curHero) {
+          if (curHeroBody) curHeroBody.style.transform = '';
+          if (curHeroBadge) curHeroBadge.style.transform = '';
+        }
+      }, { passive: true });
+
+      // Custom cursor (nodos persistentes vía transition:persist)
+      (function () {
+        if (!window.matchMedia('(hover: hover)').matches) return;
+        const dot = document.getElementById('cursor-dot');
+        const ring = document.getElementById('cursor-ring');
+        if (!dot || !ring) return;
+        let rx = 0, ry = 0, mx = 0, my = 0;
+        document.addEventListener('mousemove', e => {
+          mx = e.clientX; my = e.clientY;
+          dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+        });
+        document.addEventListener('mousedown', () => document.body.classList.add('cursor-clicking'));
+        document.addEventListener('mouseup', () => document.body.classList.remove('cursor-clicking'));
+        document.addEventListener('mouseover', e => {
+          const interactive = e.target.closest('a, button, input, label, select');
+          document.body.classList.toggle('cursor-hover', !!interactive);
+        });
+        (function animRing() {
+          rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
+          ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+          requestAnimationFrame(animRing);
+        })();
+      })();
+
+      // Escape global: cierra modal y menú
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+          closeModal();
+          if (document.body.classList.contains('menu-open')) toggleMenu(false);
+        }
+      });
+
+      // GA: conversión de oro (Calendly)
+      window.addEventListener('message', e => {
+        if (e.data && typeof e.data.event === 'string' && e.data.event === 'calendly.event_scheduled') {
+          ev('generate_lead', { method: 'calendly', value: 1, currency: 'MXN' });
+        }
+      });
+
+      // GA: cta agenda + email (delegado, una vez)
+      document.addEventListener('click', e => {
+        const el = e.target.closest && e.target.closest('a');
+        if (!el) return;
+        const href = el.getAttribute('href') || '';
+        if (href === '/agenda/' || href.endsWith('/agenda/')) ev('cta_agenda_click', { source: 'link' });
+        if (href.indexOf('mailto:') === 0) ev('email_click', { email: href.replace('mailto:', '') });
+      }, true);
+    }
+
+    // ── Setup por página (cada astro:page-load) ──
+    function pageInit() {
+      curNav = document.getElementById('nav');
+      curHero = document.querySelector('.hero');
+      curHeroBody = document.querySelector('.hero-body');
+      curHeroBadge = document.querySelector('.hero-badge');
+
+      if (window.matchMedia('(hover: hover)').matches) document.body.style.cursor = 'none';
+
+      // GA page_view manual (send_page_view:false en config)
+      ev('page_view', { page_title: document.title, page_location: location.href });
+
+      initFAQ();
+
+      document.querySelectorAll('.pstep[data-step]').forEach(card => {
+        card.addEventListener('click', () => openModal(card.dataset.step));
+      });
+      const closeBtn = document.getElementById('stepClose');
+      const overlay = document.getElementById('stepOverlay');
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (overlay) overlay.addEventListener('click', closeModal);
+
+      const burger = document.getElementById('navBurger');
+      if (burger) burger.addEventListener('click', () => toggleMenu());
+
+      initTimelineBall();
+
+      if (GSAP_ON) {
+        const heroHeadline = document.querySelector('.hero-headline');
+        if (heroHeadline) {
+          const heroExtras = ['.hero-tag', '.hero-sub', '.hero-ctas', '.hero-note', '.scroll-hint', '.hero-badge'];
+          window.gsap.set(heroExtras, { autoAlpha: 0, y: 26 });
+          Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1200))]).then(() => {
+            if (!document.querySelector('.hero-headline .line')) return;
+            const split = window.SplitText.create('.hero-headline .line', { type: 'words,chars' });
+            window.gsap.timeline({ delay: 1.45, defaults: { ease: 'power3.out', duration: 0.7 } })
+              .from(split.chars, { yPercent: 115, duration: 0.9, ease: 'power4.out', stagger: 0.016 })
+              .to('.hero-tag', { autoAlpha: 1, y: 0 }, 0.1)
+              .to('.hero-sub', { autoAlpha: 1, y: 0 }, 0.62)
+              .to('.hero-ctas', { autoAlpha: 1, y: 0 }, 0.78)
+              .to('.hero-note', { autoAlpha: 1, y: 0 }, 0.94)
+              .to(['.scroll-hint', '.hero-badge'], { autoAlpha: 1, y: 0 }, 1.05);
+          });
+        }
+        initScrollFX(document);
+      } else {
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+        document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
+      }
+    }
+
+    function pageCleanup() {
+      stFX.forEach(t => t.kill());
+      stFX = [];
+      if (window.ScrollTrigger) window.ScrollTrigger.getAll().forEach(t => t.kill());
+      document.body.classList.remove('menu-open');
+      document.body.style.overflow = '';
+    }
+
+    document.addEventListener('astro:page-load', () => { oneTimeInit(); pageInit(); });
+    document.addEventListener('astro:before-swap', pageCleanup);
+  </script>
+</body>
+</html>
