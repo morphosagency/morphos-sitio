@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
+import ServiceLinks from '../components/ServiceLinks.astro';
 ---
 <Base title='Servicios de Marketing B2B Industrial · Google Ads, Meta Ads y SEO | Morphos' description='Google Ads, Meta Ads, SEO técnico y diseño web para empresas industriales B2B en México. Estrategia y ejecución en un solo equipo, medido en oportunidades de venta.' canonical='https://www.morphosagency.com/servicios/'>
   <div class="page active" id="page-servicios">
@@ -11,10 +12,10 @@ import Base from '../layouts/Base.astro';
         <a class="page-back" href="/">← Inicio</a>
         <div class="srv-hero-content">
           <div class="f-label c-green" style="margin-bottom:20px;">Servicios</div>
-          <h2 class="f-h1 c-white" style="overflow:hidden;">
+          <h1 class="f-h1 c-white" style="overflow:hidden;">
             <span style="display:block; animation: lineUp 0.8s var(--ease) both;">El paquete correcto</span>
             <span style="display:block; animation: lineUp 0.8s 0.12s var(--ease) both;">para cada etapa.</span>
-          </h2>
+          </h1>
           <p class="f-body" style="color:rgba(255,255,255,0.4); margin-top:24px; max-width:500px; animation: fadeUp 0.8s 0.3s var(--ease) both;">Fee mensual sin contratos de largo plazo. Pauta siempre adicional y separada. Contratos mes a mes con aviso de 30 días.</p>
         </div>
       </div>
@@ -104,6 +105,8 @@ import Base from '../layouts/Base.astro';
         </div>
       </div>
     </section>
+
+    <ServiceLinks />
 
     <!-- Add-ons catalog -->
     <section class="addons-catalog-section">

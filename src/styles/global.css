@@ -1466,12 +1466,14 @@
       letter-spacing: -0.06em;
     }
     .res-hero-content { max-width: 700px; padding-bottom: 80px; }
+    .res-hero-content h1,
     .res-hero-content h2 {
       font-family: 'Montserrat', sans-serif;
       font-size: clamp(40px, 6vw, 72px);
       font-weight: 800; letter-spacing: -0.03em; line-height: 0.95;
       color: var(--white); margin-bottom: 28px;
     }
+    .res-hero-content h1 em,
     .res-hero-content h2 em { font-style: normal; color: var(--green); }
     .res-hero-honesty {
       display: flex; align-items: flex-start; gap: 16px;
