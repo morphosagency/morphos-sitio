@@ -1,6 +1,17 @@
 ---
 import Base from '../layouts/Base.astro';
 import Pillars from '../components/Pillars.astro';
+import Offerings from '../components/Offerings.astro';
+
+const industrias = [
+  { title: 'Distribuidoras B2B', desc: 'Catálogos amplios, ventas por volumen y relaciones de largo plazo. Marketing que llena el embudo de compradores corporativos recurrentes.' },
+  { title: 'Construcción e infraestructura', desc: 'Proyectos de ticket alto y ciclos largos. Generación de demanda enfocada en desarrolladores, constructoras y contratistas que cotizan en serio.' },
+  { title: 'Manufactura', desc: 'Venta técnica a plantas y áreas de compras. Posicionamiento por capacidad, certificaciones y confiabilidad — no por precio.' },
+  { title: 'Ingenierías y servicios industriales', desc: 'Servicios especializados donde la autoridad técnica vende. Contenido y campañas que demuestran expertise antes del primer contacto.' },
+];
+const nicho = [
+  { tag: 'Híper-nicho', title: 'Sistemas contra incendios', desc: 'Casi sin competencia digital seria. El sector perfecto para dominar la búsqueda industrial y capturar proyectos antes que nadie.' },
+];
 
 const pillars = [
   { num: '01', title: 'Entendemos tu ciclo de venta B2B', desc: 'Ciclos largos, comprador técnico y decisión por comité — lo conocemos de cerca.' },
@@ -91,29 +102,10 @@ const faqs = [
           </div>
           <p class="f-body c-muted" style="padding-top:8px;">No es marketing genérico adaptado a la fuerza. Conocemos cómo compra cada uno de estos sectores y dónde está su tomador de decisión.</p>
         </div>
-        <div class="addons-catalog reveal reveal-delay-1">
-          <div class="addon-row">
-            <div class="addon-row-name">Distribuidoras B2B</div>
-            <div class="addon-row-desc">Catálogos amplios, ventas por volumen y relaciones de largo plazo. Marketing que llena el embudo de compradores corporativos recurrentes.</div>
-          </div>
-          <div class="addon-row">
-            <div class="addon-row-name">Construcción e infraestructura</div>
-            <div class="addon-row-desc">Proyectos de ticket alto y ciclos largos. Generación de demanda enfocada en desarrolladores, constructoras y contratistas que cotizan en serio.</div>
-          </div>
-          <div class="addon-row">
-            <div class="addon-row-name">Manufactura</div>
-            <div class="addon-row-desc">Venta técnica a plantas y áreas de compras. Posicionamiento por capacidad, certificaciones y confiabilidad — no por precio.</div>
-          </div>
-          <div class="addon-row">
-            <div class="addon-row-name">Ingenierías y servicios industriales</div>
-            <div class="addon-row-desc">Servicios especializados donde la autoridad técnica vende. Contenido y campañas que demuestran expertise antes del primer contacto.</div>
-          </div>
-          <div class="addon-row addon-row--odoo">
-            <div>
-              <div class="addon-row-tag">Híper-nicho</div>
-              <div class="addon-row-name">Sistemas contra incendios</div>
-            </div>
-            <div class="addon-row-desc">Casi sin competencia digital seria. El sector perfecto para dominar la búsqueda industrial y capturar proyectos antes que nadie.</div>
+        <div class="reveal reveal-delay-1">
+          <Offerings items={industrias} cols={2} />
+          <div style="margin-top:20px;">
+            <Offerings items={nicho} cols={1} />
           </div>
         </div>
       </div>

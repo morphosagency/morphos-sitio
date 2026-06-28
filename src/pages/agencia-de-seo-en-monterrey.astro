@@ -1,6 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import Pillars from '../components/Pillars.astro';
+import Offerings from '../components/Offerings.astro';
+
+const incluye = [
+  { title: 'SEO técnico', desc: 'Velocidad y Core Web Vitals, indexación, schema markup, arquitectura de URLs y salud del sitio. La base sin la cual ningún contenido rankea.' },
+  { title: 'Contenido y autoridad', desc: 'Páginas de servicio, blog temático y construcción de enlaces que dan a tu dominio la autoridad para competir. El factor que más pesa a largo plazo.' },
+  { title: 'SEO local Monterrey', desc: 'Google Business Profile, consistencia de NAP y posicionamiento por zona. Para que aparezcas cuando buscan tu servicio cerca de ti.' },
+];
 
 const pillars = [
   { num: '01', title: 'Medido en leads, no en rankings vacíos', desc: 'No vendemos posiciones por vanidad. Posicionamos los términos que tu comprador busca con intención de compra.' },
@@ -91,19 +98,8 @@ const faqs = [
           </div>
           <p class="f-body c-muted" style="padding-top:8px;">No es un solo truco. El posicionamiento real es la suma de tres frentes técnicos trabajados juntos.</p>
         </div>
-        <div class="addons-catalog reveal reveal-delay-1">
-          <div class="addon-row">
-            <div class="addon-row-name">SEO técnico</div>
-            <div class="addon-row-desc">Velocidad y Core Web Vitals, indexación, schema markup, arquitectura de URLs y salud del sitio. La base sin la cual ningún contenido rankea.</div>
-          </div>
-          <div class="addon-row">
-            <div class="addon-row-name">Contenido y autoridad</div>
-            <div class="addon-row-desc">Páginas de servicio, blog temático y construcción de enlaces que dan a tu dominio la autoridad para competir. El factor que más pesa a largo plazo.</div>
-          </div>
-          <div class="addon-row">
-            <div class="addon-row-name">SEO local Monterrey</div>
-            <div class="addon-row-desc">Google Business Profile, consistencia de NAP y posicionamiento por zona. Para que aparezcas cuando buscan tu servicio cerca de ti.</div>
-          </div>
+        <div class="reveal reveal-delay-1">
+          <Offerings items={incluye} cols={3} />
         </div>
         <div class="reveal reveal-delay-2" style="text-align:center; margin-top:48px;">
           <a href="/metodologia/" class="btn btn-ghost">
