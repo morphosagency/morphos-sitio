@@ -1,7 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import Curtain from '../components/Curtain.astro';
-import Cursor from '../components/Cursor.astro';
 import Nav from '../components/Nav.astro';
 import MobileMenu from '../components/MobileMenu.astro';
 import Footer from '../components/Footer.astro';
@@ -83,12 +82,17 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;0,800;1,700;1,800&display=swap" rel="stylesheet" />
   <link rel="icon" type="image/png" href="/favicon.png" />
 
+  <!-- Calendly (cargado globalmente para que esté listo antes de astro:page-load; el init se fuerza por página) -->
+  <link rel="preconnect" href="https://assets.calendly.com" />
+  <link rel="preconnect" href="https://calendly.com" />
+  <link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css" />
+  <script is:inline src="https://assets.calendly.com/assets/external/widget.js"></script>
+
   <ClientRouter />
 </head>
 <body>
 
   <Curtain />
-  <Cursor />
 
   <a href="#main-content" class="skip-link">Ir al contenido principal</a>
 
@@ -112,6 +116,7 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
     //  Por página (reveals, hero, FAQ, modal, timeline) → en cada astro:page-load.
     // ════════════════════════════════════════════════════════════
     let _once = false;
+    let _firstPaint = true;
     let GSAP_ON = false;
     let curNav, curHero, curHeroBody, curHeroBadge;
     let revealObserver, counterObserver;
@@ -250,6 +255,24 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
       window.ScrollTrigger.refresh();
     }
 
+    // Calendly: init explícito y robusto. Garantiza que el widget SIEMPRE se dibuje,
+    // sin importar si se llegó por carga directa o por navegación (View Transitions).
+    function initCalendly() {
+      const cal = document.getElementById('calendlyWidget');
+      if (!cal) return;
+      if (cal.dataset.calInit === '1' || cal.querySelector('iframe')) return; // ya iniciado/iniciando
+      const url = cal.getAttribute('data-cal-url');
+      if (!url) return;
+      cal.dataset.calInit = '1'; // marca síncrona → ninguna segunda llamada puede duplicar
+      (function tryInit(attempt) {
+        if (window.Calendly && typeof window.Calendly.initInlineWidget === 'function') {
+          window.Calendly.initInlineWidget({ url, parentElement: cal });
+        } else if (attempt < 40) {
+          setTimeout(() => tryInit(attempt + 1), 100); // espera a widget.js (máx ~4s)
+        }
+      })(0);
+    }
+
     function initFAQ() {
       document.querySelectorAll('.faq-q').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -363,30 +386,6 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
         }
       }, { passive: true });
 
-      // Custom cursor (nodos persistentes vía transition:persist)
-      (function () {
-        if (!window.matchMedia('(hover: hover)').matches) return;
-        const dot = document.getElementById('cursor-dot');
-        const ring = document.getElementById('cursor-ring');
-        if (!dot || !ring) return;
-        let rx = 0, ry = 0, mx = 0, my = 0;
-        document.addEventListener('mousemove', e => {
-          mx = e.clientX; my = e.clientY;
-          dot.style.left = mx + 'px'; dot.style.top = my + 'px';
-        });
-        document.addEventListener('mousedown', () => document.body.classList.add('cursor-clicking'));
-        document.addEventListener('mouseup', () => document.body.classList.remove('cursor-clicking'));
-        document.addEventListener('mouseover', e => {
-          const interactive = e.target.closest('a, button, input, label, select');
-          document.body.classList.toggle('cursor-hover', !!interactive);
-        });
-        (function animRing() {
-          rx += (mx - rx) * 0.16; ry += (my - ry) * 0.16;
-          ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
-          requestAnimationFrame(animRing);
-        })();
-      })();
-
       // Escape global: cierra modal y menú
       document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
@@ -419,12 +418,11 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
       curHeroBody = document.querySelector('.hero-body');
       curHeroBadge = document.querySelector('.hero-badge');
 
-      if (window.matchMedia('(hover: hover)').matches) document.body.style.cursor = 'none';
-
       // GA page_view manual (send_page_view:false en config)
       ev('page_view', { page_title: document.title, page_location: location.href });
 
       initFAQ();
+      initCalendly();
 
       document.querySelectorAll('.pstep[data-step]').forEach(card => {
         card.addEventListener('click', () => openModal(card.dataset.step));
@@ -444,10 +442,12 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
         if (heroHeadline) {
           const heroExtras = ['.hero-tag', '.hero-sub', '.hero-ctas', '.hero-note', '.scroll-hint', '.hero-badge'];
           window.gsap.set(heroExtras, { autoAlpha: 0, y: 26 });
+          // Primera carga: espera a que el telón se levante (1.45s). Navegaciones posteriores: arranca casi de inmediato.
+          const heroDelay = _firstPaint ? 1.45 : 0.15;
           Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1200))]).then(() => {
             if (!document.querySelector('.hero-headline .line')) return;
             const split = window.SplitText.create('.hero-headline .line', { type: 'words,chars' });
-            window.gsap.timeline({ delay: 1.45, defaults: { ease: 'power3.out', duration: 0.7 } })
+            window.gsap.timeline({ delay: heroDelay, defaults: { ease: 'power3.out', duration: 0.7 } })
               .from(split.chars, { yPercent: 115, duration: 0.9, ease: 'power4.out', stagger: 0.016 })
               .to('.hero-tag', { autoAlpha: 1, y: 0 }, 0.1)
               .to('.hero-sub', { autoAlpha: 1, y: 0 }, 0.62)
@@ -461,6 +461,8 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
         document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
         document.querySelectorAll('.counter').forEach(el => counterObserver.observe(el));
       }
+
+      _firstPaint = false;
     }
 
     function pageCleanup() {
@@ -472,7 +474,14 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
     }
 
     document.addEventListener('astro:page-load', () => { oneTimeInit(); pageInit(); });
-    document.addEventListener('astro:before-swap', pageCleanup);
+    document.addEventListener('astro:before-swap', (e) => {
+      pageCleanup();
+      // El telón solo en la primera carga: lo quitamos del documento entrante en cada navegación.
+      if (e.newDocument) {
+        const curtain = e.newDocument.getElementById('intro-curtain');
+        if (curtain) curtain.remove();
+      }
+    });
   </script>
 </body>
 </html>

@@ -47,13 +47,13 @@ import Base from '../layouts/Base.astro';
             </div>
           </div>
 
-          <!-- RIGHT: Calendly embed -->
+          <!-- RIGHT: Calendly embed. Usamos data-cal-url (NO data-url) para que el auto-init de
+               Calendly lo ignore y solo nuestro init explícito cree el iframe → un solo widget. -->
           <div class="agd-cal">
-            <div class="calendly-inline-widget"
-              data-url="https://calendly.com/omar-morphosagency/30min?hide_gdpr_banner=1&background_color=0d1b2a&text_color=ffffff&primary_color=7a9e7e"
+            <div id="calendlyWidget"
+              data-cal-url="https://calendly.com/omar-morphosagency/30min?hide_gdpr_banner=1&background_color=0d1b2a&text_color=ffffff&primary_color=7a9e7e"
               style="min-width:320px;height:660px;">
             </div>
-            <script is:inline src="https://assets.calendly.com/assets/external/widget.js" async></script>
           </div>
 
         </div>

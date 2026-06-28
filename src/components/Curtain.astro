@@ -1,6 +1,7 @@
 ---
-// Intro curtain — animación CSS pura. Re-aparece en cada navegación (View Transitions
-// recrea el nodo y los @keyframes vuelven a correr).
+// Intro curtain — animación CSS pura. Solo se muestra en la PRIMERA carga del sitio.
+// En cada navegación (View Transitions) se elimina del documento entrante vía
+// astro:before-swap en Base.astro, para que no se repita.
 ---
 <div id="intro-curtain" aria-hidden="true">
   <div class="curtain-inner">

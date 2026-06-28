@@ -1,0 +1,281 @@
+---
+import Base from '../layouts/Base.astro';
+
+const faqs = [
+  {
+    q: '¿Qué hace una agencia de marketing industrial?',
+    a: 'Una agencia de marketing industrial genera demanda calificada para empresas que venden a otras empresas: manufactura, distribución, construcción, ingenierías y servicios industriales. A diferencia del marketing de consumo, el trabajo se centra en ciclos de venta largos, compradores técnicos y decisiones por comité. En la práctica eso significa estrategia de canal (Google Ads, Meta Ads, SEO), contenido que habla el idioma del comprador industrial, y un sistema de medición que reporta oportunidades de venta y pipeline — no likes ni impresiones. El objetivo no es volumen de leads, sino leads que tu equipo comercial pueda cerrar.'
+  },
+  {
+    q: '¿En qué se diferencia del marketing tradicional o de consumo?',
+    a: 'El comprador industrial no compra por impulso. Investiga, compara, involucra a varias personas y tarda semanas o meses en decidir. Por eso las tácticas de B2C — alcance masivo, métricas de vanidad, creatividad lifestyle — fracasan en industria. El marketing industrial exige entender el ciclo de venta, hablar con criterio técnico, calificar bien los leads y medir el retorno real sobre el ticket de venta, que suele ser alto. Una campaña que trae 200 clics baratos pero ningún lead que califique es un fracaso, aunque las métricas se vean bien.'
+  },
+  {
+    q: '¿Para qué tipo de empresas industriales trabajan?',
+    a: 'Trabajamos con empresas B2B industriales mexicanas con un proceso de venta claro y un tomador de decisión definido: distribuidoras B2B, manufactura, construcción, ingenierías, servicios y mantenimiento industrial, y sistemas contra incendios. El perfil ideal es una empresa que ya factura, entiende el valor del marketing, y quiere resultados sin microgestionar la ejecución. No trabajamos con e-commerce de consumo ni negocios B2C de volumen — nuestra especialidad es el ciclo de venta industrial.'
+  },
+  {
+    q: '¿Cuánto tarda en verse resultados en marketing industrial?',
+    a: 'Los primeros leads de Google Ads pueden aparecer en 2–3 semanas si el tracking está bien configurado. Meta Ads tarda algo más por su fase de aprendizaje (4–6 semanas). El SEO industrial es un canal de 6–12 meses: compone con el tiempo. Pero por el ciclo de venta largo del B2B industrial, el indicador real — oportunidades que avanzan a propuesta y cierre — madura entre 60 y 90 días. Lo que sí tienes desde el mes 1 es claridad total: saber qué pasa, por qué, y qué sigue.'
+  }
+];
+---
+<Base
+  title='Agencia de Marketing Industrial B2B en México | Morphos'
+  description='Agencia de marketing industrial para empresas B2B en México: manufactura, construcción, distribución e ingeniería. Generamos oportunidades de venta calificadas, no likes. Sin microgestión.'
+  canonical='https://www.morphosagency.com/agencia-de-marketing-industrial/'
+>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map(f => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": { "@type": "Answer", "text": f.a }
+    }))
+  })} />
+
+  <div class="page active" id="page-industrial">
+
+    <!-- Hero -->
+    <section class="srv-hero">
+      <div class="srv-hero-bg-num">I</div>
+      <div class="wrap srv-hero-inner">
+        <a class="page-back" href="/">← Inicio</a>
+        <div class="srv-hero-content">
+          <div class="f-label c-green" style="margin-bottom:20px;">Marketing B2B Industrial</div>
+          <h1 class="f-h1 c-white" style="overflow:hidden;">
+            <span style="display:block; animation: lineUp 0.8s var(--ease) both;">Agencia de marketing</span>
+            <span style="display:block; animation: lineUp 0.8s 0.12s var(--ease) both;">industrial.</span>
+          </h1>
+          <p class="f-body" style="color:rgba(255,255,255,0.45); margin-top:24px; max-width:540px; animation: fadeUp 0.8s 0.3s var(--ease) both;">Generamos oportunidades de venta calificadas para empresas industriales mexicanas — manufactura, construcción, distribución e ingeniería. Estrategia y ejecución que entienden tu ciclo de venta, medidas en pipeline y no en likes. Sin microgestión.</p>
+          <div style="margin-top:36px; animation: fadeUp 0.8s 0.45s var(--ease) both;">
+            <a href="/agenda/" class="btn btn-primary btn-lg">
+              <span>Agenda una llamada</span>
+              <span class="arrow">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pilares / diferenciadores -->
+    <section class="ind-pillars">
+      <div class="ind-pillars-grid">
+        <div class="ind-pillar reveal">
+          <div class="ind-pillar-num">01</div>
+          <div class="ind-pillar-title">Entendemos tu ciclo de venta B2B</div>
+          <div class="ind-pillar-desc">Ciclos largos, comprador técnico y decisión por comité — lo conocemos de cerca.</div>
+        </div>
+        <div class="ind-pillar reveal reveal-delay-1">
+          <div class="ind-pillar-num">02</div>
+          <div class="ind-pillar-title">Oportunidades, no likes</div>
+          <div class="ind-pillar-desc">Reportamos pipeline y oportunidades de venta reales, no métricas de vanidad.</div>
+        </div>
+        <div class="ind-pillar reveal reveal-delay-2">
+          <div class="ind-pillar-num">03</div>
+          <div class="ind-pillar-title">Sin microgestión</div>
+          <div class="ind-pillar-desc">Firmas y ejecutamos con autonomía. Tú te enfocas en operar tu empresa.</div>
+        </div>
+        <div class="ind-pillar reveal reveal-delay-3">
+          <div class="ind-pillar-num">04</div>
+          <div class="ind-pillar-title">Sin permanencia</div>
+          <div class="ind-pillar-desc">Contratos mes a mes con aviso de 30 días. Te quedas por resultados.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Por qué el marketing industrial es distinto -->
+    <section class="services" style="padding-top:100px; padding-bottom:90px;">
+      <div class="wrap" style="max-width:820px;">
+        <div class="f-label c-green reveal" style="margin-bottom:20px;">Por qué es distinto</div>
+        <h2 class="f-h2 c-navy reveal" style="margin-bottom:32px;">El marketing industrial<br>no se parece al de consumo.</h2>
+        <p class="f-body c-muted reveal" style="margin-bottom:24px;">El comprador industrial no compra por impulso. Investiga, compara proveedores, involucra a ingeniería, compras y dirección, y tarda semanas o meses en decidir. Un ticket de venta alto y un proceso por comité cambian por completo las reglas del juego. Las tácticas que funcionan vendiendo zapatos o postres — alcance masivo, creatividad lifestyle, métricas de vanidad — fracasan cuando tu cliente es una planta, una constructora o una distribuidora.</p>
+        <p class="f-body c-muted reveal reveal-delay-1" style="margin-bottom:24px;">La mayoría de las agencias tratan a una empresa industrial como si vendiera al consumidor final. Reportan impresiones, alcance y "engagement" — números que se ven bien pero no le dicen al director si el marketing está trayendo negocio. En Morphos medimos lo que importa: cuántas <strong>oportunidades de venta calificadas</strong> generamos, cuánto cuesta cada una, y cómo se mueven hacia el cierre.</p>
+        <p class="f-body c-muted reveal reveal-delay-2">Somos una agencia especializada en <strong>marketing B2B industrial</strong>: entendemos los ciclos largos, el comprador técnico y la diferencia entre un lead que califica y uno que solo infla el reporte. Esa especialización es la diferencia entre gastar en marketing y <em>invertir</em> en él.</p>
+      </div>
+    </section>
+
+    <!-- Industrias / verticales como secciones -->
+    <section class="addons-catalog-section">
+      <div class="wrap">
+        <div class="addons-catalog-header reveal">
+          <div>
+            <div class="f-label c-green" style="margin-bottom:16px;">Industrias que atendemos</div>
+            <h2 class="f-h2" style="color:var(--white);">Experiencia real<br>en sectores industriales.</h2>
+          </div>
+          <p class="f-body c-muted" style="padding-top:8px;">No es marketing genérico adaptado a la fuerza. Conocemos cómo compra cada uno de estos sectores y dónde está su tomador de decisión.</p>
+        </div>
+        <div class="addons-catalog reveal reveal-delay-1">
+          <div class="addon-row">
+            <div class="addon-row-name">Distribuidoras B2B</div>
+            <div class="addon-row-desc">Catálogos amplios, ventas por volumen y relaciones de largo plazo. Marketing que llena el embudo de compradores corporativos recurrentes.</div>
+          </div>
+          <div class="addon-row">
+            <div class="addon-row-name">Construcción e infraestructura</div>
+            <div class="addon-row-desc">Proyectos de ticket alto y ciclos largos. Generación de demanda enfocada en desarrolladores, constructoras y contratistas que cotizan en serio.</div>
+          </div>
+          <div class="addon-row">
+            <div class="addon-row-name">Manufactura</div>
+            <div class="addon-row-desc">Venta técnica a plantas y áreas de compras. Posicionamiento por capacidad, certificaciones y confiabilidad — no por precio.</div>
+          </div>
+          <div class="addon-row">
+            <div class="addon-row-name">Ingenierías y servicios industriales</div>
+            <div class="addon-row-desc">Servicios especializados donde la autoridad técnica vende. Contenido y campañas que demuestran expertise antes del primer contacto.</div>
+          </div>
+          <div class="addon-row addon-row--odoo">
+            <div>
+              <div class="addon-row-tag">Híper-nicho</div>
+              <div class="addon-row-name">Sistemas contra incendios</div>
+            </div>
+            <div class="addon-row-desc">Casi sin competencia digital seria. El sector perfecto para dominar la búsqueda industrial y capturar proyectos antes que nadie.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Qué hacemos — servicios atados a metodología 360 -->
+    <section class="steps-section">
+      <div class="wrap">
+        <div class="steps-section-header reveal">
+          <div class="f-label c-green" style="margin-bottom:16px;">Cómo lo hacemos</div>
+          <h2 class="f-h2 c-navy">Un sistema integral,<br>no servicios sueltos.</h2>
+          <p class="f-body c-muted" style="margin-top:20px; max-width:540px;">La mayoría vende canales por separado. Nosotros operamos un sistema 360 donde cada pieza se mide y se conecta con las demás — porque en B2B industrial el resultado lo da el conjunto, no un anuncio aislado.</p>
+        </div>
+        <div class="steps-row">
+          <div class="step-panel reveal">
+            <div class="step-num">01</div>
+            <div class="step-title">Google Ads B2B</div>
+            <p>Captura la demanda existente: quien ya busca tu producto o servicio industrial. Estructura por intención, tracking verificado y optimización a leads calificados, no a clics.</p>
+          </div>
+          <div class="step-panel reveal reveal-delay-1">
+            <div class="step-num">02</div>
+            <div class="step-title">Meta Ads B2B</div>
+            <p>Genera demanda donde aún no te buscan: presencia, retargeting y audiencias por sector. Construye reconocimiento en el comprador industrial antes de que necesite cotizar.</p>
+          </div>
+          <div class="step-panel reveal reveal-delay-2">
+            <div class="step-num">03</div>
+            <div class="step-title">SEO industrial</div>
+            <p>El activo que compone: posicionar tu sitio para los términos que tu comprador técnico busca. Autoridad temática que trae leads sin pagar por cada clic.</p>
+          </div>
+          <div class="step-panel reveal reveal-delay-3">
+            <div class="step-num">04</div>
+            <div class="step-title">Web y medición</div>
+            <p>Sitio que convierte y tracking que no miente: GA4, Pixel y CAPI. Sin medición correcta, todo lo demás optimiza a ciegas. Es lo primero que construimos.</p>
+          </div>
+        </div>
+        <div class="reveal reveal-delay-2" style="text-align:center; margin-top:56px;">
+          <a href="/metodologia/" class="btn btn-ghost">
+            <span>Conoce nuestra metodología 360</span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq-split-section">
+      <div class="wrap">
+        <div class="faq-split-grid">
+          <div class="faq-split-left">
+            <div class="faq-highlight reveal">
+              <div class="faq-highlight-label">El criterio de fondo</div>
+              <div class="faq-highlight-quote">No medimos tu marketing en likes. Lo medimos en <em>oportunidades de venta reales.</em></div>
+              <div class="faq-highlight-sub">Si un lead no lo puede cerrar tu equipo comercial, no cuenta — por bonito que se vea el reporte.</div>
+            </div>
+          </div>
+          <div class="faq-split-right">
+            <div class="f-label c-green" style="margin-bottom:16px;">Preguntas frecuentes</div>
+            <h2 class="f-h2 c-navy" style="margin-bottom:40px;">Marketing industrial,<br>sin rodeos.</h2>
+            <div class="faq-list">
+              {faqs.map((f, i) => (
+                <div class={`faq-item reveal${i % 3 === 1 ? ' reveal-delay-1' : i % 3 === 2 ? ' reveal-delay-2' : ''}`}>
+                  <button class="faq-q" aria-expanded="false">
+                    <span>{f.q}</span>
+                    <span class="faq-icon">+</span>
+                  </button>
+                  <div class="faq-a">
+                    <p>{f.a}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-final">
+      <div class="wrap cta-final-inner">
+        <div class="cta-tag reveal">Siguiente paso</div>
+        <h2 class="reveal reveal-delay-1">¿Listo para un marketing<br>que <em>tu industria</em> entienda?</h2>
+        <p class="reveal reveal-delay-2">Agenda 30 minutos con Omar. Sin presentación de ventas — un diagnóstico honesto de tu situación y si Morphos es el socio correcto para tu empresa industrial.</p>
+        <div class="reveal reveal-delay-3">
+          <a href="/agenda/" class="btn btn-primary btn-lg">
+            <span>Agenda tu llamada gratuita</span>
+            <span class="arrow">→</span>
+          </a>
+          <p class="cta-note">Sesión 1 a 1 con Omar · 30 minutos · Sin compromiso</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <style>
+    .ind-pillars {
+      background: var(--off, #f5f5f3);
+      padding: 76px 0;
+      border-bottom: 1px solid rgba(13, 27, 42, 0.06);
+    }
+    .ind-pillars-grid {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+    }
+    .ind-pillar {
+      background: #fff;
+      border: 1px solid rgba(13, 27, 42, 0.08);
+      border-radius: 16px;
+      padding: 30px 26px;
+      transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), border-color 0.45s var(--ease);
+    }
+    .ind-pillar:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 44px rgba(13, 27, 42, 0.10);
+      border-color: rgba(122, 158, 126, 0.5);
+    }
+    .ind-pillar-num {
+      font-family: var(--serif, 'Playfair Display', serif);
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--green, #7a9e7e);
+      line-height: 1;
+      margin-bottom: 18px;
+    }
+    .ind-pillar-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 1.08rem;
+      color: var(--navy, #0d1b2a);
+      margin-bottom: 9px;
+      line-height: 1.25;
+    }
+    .ind-pillar-desc {
+      font-size: 0.92rem;
+      color: rgba(13, 27, 42, 0.58);
+      line-height: 1.55;
+    }
+    @media (max-width: 900px) {
+      .ind-pillars-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .ind-pillars { padding: 52px 0; }
+      .ind-pillars-grid { grid-template-columns: 1fr; gap: 16px; }
+    }
+  </style>
+</Base>
