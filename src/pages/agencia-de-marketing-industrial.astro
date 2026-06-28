@@ -1,5 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
+import Pillars from '../components/Pillars.astro';
+
+const pillars = [
+  { num: '01', title: 'Entendemos tu ciclo de venta B2B', desc: 'Ciclos largos, comprador técnico y decisión por comité — lo conocemos de cerca.' },
+  { num: '02', title: 'Oportunidades, no likes', desc: 'Reportamos pipeline y oportunidades de venta reales, no métricas de vanidad.' },
+  { num: '03', title: 'Sin microgestión', desc: 'Firmas y ejecutamos con autonomía. Tú te enfocas en operar tu empresa.' },
+  { num: '04', title: 'Sin permanencia', desc: 'Contratos mes a mes con aviso de 30 días. Te quedas por resultados.' },
+];
 
 const faqs = [
   {
@@ -60,30 +68,7 @@ const faqs = [
     </section>
 
     <!-- Pilares / diferenciadores -->
-    <section class="ind-pillars">
-      <div class="ind-pillars-grid">
-        <div class="ind-pillar reveal">
-          <div class="ind-pillar-num">01</div>
-          <div class="ind-pillar-title">Entendemos tu ciclo de venta B2B</div>
-          <div class="ind-pillar-desc">Ciclos largos, comprador técnico y decisión por comité — lo conocemos de cerca.</div>
-        </div>
-        <div class="ind-pillar reveal reveal-delay-1">
-          <div class="ind-pillar-num">02</div>
-          <div class="ind-pillar-title">Oportunidades, no likes</div>
-          <div class="ind-pillar-desc">Reportamos pipeline y oportunidades de venta reales, no métricas de vanidad.</div>
-        </div>
-        <div class="ind-pillar reveal reveal-delay-2">
-          <div class="ind-pillar-num">03</div>
-          <div class="ind-pillar-title">Sin microgestión</div>
-          <div class="ind-pillar-desc">Firmas y ejecutamos con autonomía. Tú te enfocas en operar tu empresa.</div>
-        </div>
-        <div class="ind-pillar reveal reveal-delay-3">
-          <div class="ind-pillar-num">04</div>
-          <div class="ind-pillar-title">Sin permanencia</div>
-          <div class="ind-pillar-desc">Contratos mes a mes con aviso de 30 días. Te quedas por resultados.</div>
-        </div>
-      </div>
-    </section>
+    <Pillars items={pillars} />
 
     <!-- Por qué el marketing industrial es distinto -->
     <section class="services" style="padding-top:100px; padding-bottom:90px;">
@@ -165,7 +150,7 @@ const faqs = [
           </div>
         </div>
         <div class="reveal reveal-delay-2" style="text-align:center; margin-top:56px;">
-          <a href="/metodologia/" class="btn btn-ghost">
+          <a href="/metodologia/" class="btn btn-dark">
             <span>Conoce nuestra metodología 360</span>
             <span class="arrow">→</span>
           </a>
@@ -224,58 +209,20 @@ const faqs = [
   </div>
 
   <style>
-    .ind-pillars {
-      background: var(--off, #f5f5f3);
-      padding: 76px 0;
-      border-bottom: 1px solid rgba(13, 27, 42, 0.06);
-    }
-    .ind-pillars-grid {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 0 24px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 22px;
-    }
-    .ind-pillar {
-      background: #fff;
+    /* Definición a las tarjetas de "Cómo lo hacemos" (scoped: no afecta a Servicios) */
+    .steps-row { gap: 22px; }
+    .step-panel {
       border: 1px solid rgba(13, 27, 42, 0.08);
+      border-top: 2px solid transparent;
       border-radius: 16px;
-      padding: 30px 26px;
-      transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), border-color 0.45s var(--ease);
+      box-shadow: 0 6px 24px rgba(13, 27, 42, 0.05);
     }
-    .ind-pillar:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 44px rgba(13, 27, 42, 0.10);
-      border-color: rgba(122, 158, 126, 0.5);
+    .step-num { color: rgba(122, 158, 126, 0.9); }
+    @media (max-width: 880px) {
+      .steps-row { grid-template-columns: repeat(2, 1fr); }
     }
-    .ind-pillar-num {
-      font-family: var(--serif, 'Playfair Display', serif);
-      font-size: 2.1rem;
-      font-weight: 700;
-      color: var(--green, #7a9e7e);
-      line-height: 1;
-      margin-bottom: 18px;
-    }
-    .ind-pillar-title {
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      font-size: 1.08rem;
-      color: var(--navy, #0d1b2a);
-      margin-bottom: 9px;
-      line-height: 1.25;
-    }
-    .ind-pillar-desc {
-      font-size: 0.92rem;
-      color: rgba(13, 27, 42, 0.58);
-      line-height: 1.55;
-    }
-    @media (max-width: 900px) {
-      .ind-pillars-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 500px) {
-      .ind-pillars { padding: 52px 0; }
-      .ind-pillars-grid { grid-template-columns: 1fr; gap: 16px; }
+    @media (max-width: 520px) {
+      .steps-row { grid-template-columns: 1fr; }
     }
   </style>
 </Base>
