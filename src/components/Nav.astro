@@ -1,0 +1,25 @@
+---
+const path = Astro.url.pathname;
+const links = [
+  { href: '/servicios/', label: 'Servicios' },
+  { href: '/metodologia/', label: 'Resultados' },
+  { href: '/nosotros/', label: 'Nosotros' },
+];
+const isActive = (href: string) => path === href;
+---
+<nav id="nav">
+  <div class="nav-in">
+    <a class="logo" href="/" aria-label="Morphos Marketing — Inicio">
+      <span class="logo-mark"></span><span class="logo-word"></span>
+    </a>
+    <ul class="nav-links">
+      {links.map((l) => (
+        <li><a href={l.href} class={isActive(l.href) ? 'nav-active' : undefined} aria-current={isActive(l.href) ? 'page' : undefined}>{l.label}</a></li>
+      ))}
+      <li><a href="/agenda/" class="nav-cta-btn">Agenda tu llamada</a></li>
+    </ul>
+    <button class="nav-burger" id="navBurger" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span>
+    </button>
+  </div>
+</nav>

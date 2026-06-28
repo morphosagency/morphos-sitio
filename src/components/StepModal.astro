@@ -1,0 +1,11 @@
+---
+// Modal de pasos del método. Vive en el layout (chrome compartido); su JS guarda
+// contra null para las páginas que no tienen tarjetas .pstep[data-step].
+---
+<div class="smodal" id="stepModal" role="dialog" aria-modal="true">
+  <div class="smodal-overlay" id="stepOverlay"></div>
+  <div class="smodal-card">
+    <button class="smodal-close" id="stepClose" aria-label="Cerrar">×</button>
+    <div id="stepModalContent"></div>
+  </div>
+</div>
