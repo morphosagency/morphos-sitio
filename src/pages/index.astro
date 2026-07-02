@@ -22,14 +22,13 @@ import ServiceLinks from '../components/ServiceLinks.astro';
         <div class="hero-content">
           <div class="hero-tag">
             <div class="hero-tag-dot"></div>
-            <span>Agencia de Marketing B2B · Industrial · Monterrey</span>
+            <h1>Agencia de Marketing B2B Industrial en Monterrey</h1>
           </div>
 
-          <h1 class="hero-headline">
-            <div class="line-wrap"><span class="line">Marketing B2B</span></div>
-            <div class="line-wrap"><span class="line">que se mide,</span></div>
-            <div class="line-wrap"><span class="line">no en likes.</span></div>
-          </h1>
+          <p class="hero-headline" role="presentation">
+            <span class="line-wrap"><span class="line">Marketing que</span></span>
+            <span class="line-wrap"><span class="line line-serif">toma forma.</span></span>
+          </p>
 
           <p class="hero-sub">Somos la agencia de marketing B2B para empresas industriales en Monterrey y todo México. Estrategia y ejecución que se mide en pipeline, no en likes. Sin microgestión: tú decides el rumbo, nosotros entregamos.</p>
 
@@ -44,24 +43,6 @@ import ServiceLinks from '../components/ServiceLinks.astro';
           </div>
 
           <p class="hero-note">Sesión 1 a 1 · 30 minutos · Sin compromiso</p>
-        </div>
-      </div>
-
-      <!-- Floating social proof badge -->
-      <div class="hero-badge">
-        <div class="hero-badge-card">
-          <div class="hero-badge-label">El estándar Morphos</div>
-          <div class="hero-badge-stats">
-            <div class="hero-badge-stat">
-              <span class="val">5<span class="ac">+</span></span>
-              <span class="lbl">años en marketing<br>B2B industrial</span>
-            </div>
-            <div class="hero-badge-div"></div>
-            <div class="hero-badge-stat">
-              <span class="val">100<span class="ac">%</span></span>
-              <span class="lbl">medible: pipeline,<br>no vanidad</span>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -99,35 +80,19 @@ import ServiceLinks from '../components/ServiceLinks.astro';
     <section class="statement">
       <div class="wrap">
         <div class="statement-inner">
-          <div class="statement-num reveal">01</div>
-          <div class="statement-text reveal reveal-delay-2">
-            <p>La mayoría de las agencias ejecutan sin entender el negocio de su cliente. Morphos no.</p>
-            <div class="body">Antes de proponer una sola campaña, auditamos tu situación, entendemos tu ciclo de venta, y construimos una estrategia que conecta el marketing con resultados reales de negocio — no con métricas de vanidad. Cada peso invertido tiene una justificación.</div>
-          </div>
+          <p class="statement-headline" data-morph>La mayoría de las agencias ejecutan sin entender el negocio de su cliente. Morphos no.</p>
+          <div class="statement-body reveal reveal-delay-2">Antes de proponer una sola campaña, auditamos tu situación, entendemos tu ciclo de venta, y construimos una estrategia que conecta el marketing con resultados reales de negocio — no con métricas de vanidad. Cada peso invertido tiene una justificación.</div>
         </div>
       </div>
     </section>
 
-    <!-- ════ STATS ════ -->
-    <section class="stats">
+    <!-- ════ MANIFIESTO ════ -->
+    <section class="manifesto">
       <div class="wrap">
-        <div class="stats-grid">
-          <div class="stat reveal">
-            <div class="stat-n"><span class="counter" data-target="5">0</span><span class="accent">+</span></div>
-            <div class="stat-l">Años ejecutando<br>marketing B2B en México</div>
-          </div>
-          <div class="stat reveal reveal-delay-1">
-            <div class="stat-n"><span class="counter" data-target="4">0</span></div>
-            <div class="stat-l">Canales integrados en<br>un sistema 360</div>
-          </div>
-          <div class="stat reveal reveal-delay-2">
-            <div class="stat-n"><span class="counter" data-target="5">0</span></div>
-            <div class="stat-l">Verticales industriales<br>de especialidad</div>
-          </div>
-          <div class="stat reveal reveal-delay-3">
-            <div class="stat-n"><span class="counter" data-target="100">0</span><span class="accent">%</span></div>
-            <div class="stat-l">Medible: oportunidades<br>de venta, no vanidad</div>
-          </div>
+        <div class="manifesto-inner">
+          <div class="manifesto-label f-label c-green reveal">El estándar Morphos</div>
+          <h2 class="f-display manifesto-line" data-morph>No reportamos likes. Construimos pipeline que se convierte en <em>ventas.</em></h2>
+          <p class="manifesto-sub reveal">Marketing B2B industrial medido en oportunidades de venta reales — cada peso invertido, justificado.</p>
         </div>
       </div>
     </section>
@@ -136,9 +101,9 @@ import ServiceLinks from '../components/ServiceLinks.astro';
     <section class="diff">
       <div class="wrap">
         <div class="diff-header">
-          <div class="reveal">
-            <div class="f-label c-green" style="margin-bottom:16px;">El problema</div>
-            <h2 class="f-h2 c-navy">Por qué el marketing<br>industrial falla.</h2>
+          <div>
+            <div class="f-label c-green reveal" style="margin-bottom:16px;">El problema</div>
+            <h2 class="f-h2 c-navy" data-morph>Por qué el marketing<br>industrial falla.</h2>
           </div>
           <div class="reveal reveal-delay-2">
             <p class="f-body c-muted">Tres razones por las que la mayoría de las empresas B2B no obtienen resultados con el marketing — y cómo Morphos los resuelve.</p>
@@ -150,17 +115,17 @@ import ServiceLinks from '../components/ServiceLinks.astro';
           </div>
         </div>
         <div class="diff-items">
-          <div class="diff-item reveal">
+          <div class="diff-item" data-morph>
             <div class="diff-item-num">01</div>
             <h3>Agencias que ejecutan sin estrategia</h3>
             <p>Crean anuncios sin entender tu ciclo de venta ni cuánto vale realmente un cliente nuevo. El resultado es presupuesto quemado y leads que no califican.</p>
           </div>
-          <div class="diff-item reveal reveal-delay-1">
+          <div class="diff-item" data-morph="0.12">
             <div class="diff-item-num">02</div>
             <h3>Métricas de vanidad en lugar de negocio</h3>
             <p>Reportes llenos de impresiones y clics que no responden la pregunta real: ¿cuánto negocio generó el marketing este mes? Morphos reporta en pesos y leads.</p>
           </div>
-          <div class="diff-item reveal reveal-delay-2">
+          <div class="diff-item" data-morph="0.24">
             <div class="diff-item-num">03</div>
             <h3>Sin entender el sector industrial</h3>
             <p>Vender maquinaria, servicios contra incendios o materiales de construcción no es lo mismo que vender ropa. Los ciclos, los compradores, y el mensaje son distintos.</p>
@@ -174,7 +139,7 @@ import ServiceLinks from '../components/ServiceLinks.astro';
       <div class="wrap process-inner">
         <div class="process-header">
           <div class="f-label c-green reveal" style="margin-bottom:16px;">Cómo trabajamos</div>
-          <h2 class="f-h2 c-white reveal reveal-delay-1" style="max-width:560px;">Diagnóstico primero.<br>Estrategia después.<br>Resultados siempre.</h2>
+          <h2 class="f-h2 c-white" data-morph style="max-width:560px;">Diagnóstico primero.<br>Estrategia después.<br>Resultados siempre.</h2>
         </div>
         <div class="process-steps">
           <div class="pstep reveal" data-step="1">
@@ -206,9 +171,9 @@ import ServiceLinks from '../components/ServiceLinks.astro';
     <section class="services">
       <div class="wrap">
         <div class="services-header">
-          <div class="reveal">
-            <div class="f-label c-green" style="margin-bottom:16px;">Servicios</div>
-            <h2 class="f-h2 c-navy">El paquete correcto<br>para cada etapa.</h2>
+          <div>
+            <div class="f-label c-green reveal" style="margin-bottom:16px;">Servicios</div>
+            <h2 class="f-h2 c-navy" data-morph>El paquete correcto<br>para cada etapa.</h2>
           </div>
           <div class="reveal reveal-delay-1">
             <p class="f-body c-muted" style="margin-bottom:24px;">Fee mensual sin contratos de largo plazo. Pauta siempre adicional y separada — así sabes exactamente qué va a los medios y qué al servicio. <strong>Los montos son un punto de partida: cada propuesta se cotiza a la medida de tu objetivo, mercado y alcance.</strong></p>
@@ -216,7 +181,7 @@ import ServiceLinks from '../components/ServiceLinks.astro';
           </div>
         </div>
         <div class="packages">
-          <a href="/agenda/" class="pkg reveal">
+          <a href="/agenda/" class="pkg" data-morph>
             <div class="pkg-badge">Para empresas que inician</div>
             <div class="pkg-name">Esencial</div>
             <div class="pkg-price">Desde <strong>$12,000</strong> MXN/mes</div>
@@ -230,7 +195,7 @@ import ServiceLinks from '../components/ServiceLinks.astro';
             </ul>
             <div class="pkg-cta">Ver paquete <span class="arrow">→</span></div>
           </a>
-          <a href="/agenda/" class="pkg pkg--featured reveal reveal-delay-1">
+          <a href="/agenda/" class="pkg pkg--featured" data-morph="0.12">
             <div class="pkg-badge">El más elegido</div>
             <div class="pkg-name">Crecimiento</div>
             <div class="pkg-price">Desde <strong>$18,000</strong> MXN/mes</div>
@@ -245,7 +210,7 @@ import ServiceLinks from '../components/ServiceLinks.astro';
             </ul>
             <div class="pkg-cta">Agenda tu llamada <span class="arrow">→</span></div>
           </a>
-          <a href="/agenda/" class="pkg reveal reveal-delay-2">
+          <a href="/agenda/" class="pkg" data-morph="0.24">
             <div class="pkg-badge">Para empresas ambiciosas</div>
             <div class="pkg-name">Escala</div>
             <div class="pkg-price">Desde <strong>$30,000</strong> MXN/mes</div>
@@ -274,12 +239,12 @@ import ServiceLinks from '../components/ServiceLinks.astro';
     <!-- ════ MÉTODO (teaser) ════ -->
     <section class="case">
       <div class="wrap case-inner">
-        <div class="case-header reveal">
+        <div class="case-header">
           <div>
-            <div class="case-tag">Cómo trabajamos · Marketing B2B industrial</div>
-            <h2>De cero presencia digital<br>a un canal de leads predecible.</h2>
+            <div class="case-tag reveal">Cómo trabajamos · Marketing B2B industrial</div>
+            <h2 data-morph>De cero presencia digital<br>a un canal de leads predecible.</h2>
           </div>
-          <div class="case-header-right">
+          <div class="case-header-right reveal reveal-delay-1">
             <p>Un canal de demanda B2B industrial no se construye con un pico de un mes — se construye por etapas, con tracking limpio desde el día 1 y decisiones basadas en datos. Así es el camino.</p>
             <a href="/metodologia/" class="btn btn-ghost">
               <span>Ver cómo lo construimos</span>
@@ -312,12 +277,9 @@ import ServiceLinks from '../components/ServiceLinks.astro';
       <div class="wrap">
         <div class="about-grid">
           <div class="about-photo reveal">
-            <div class="photo-frame">
-              <div class="photo-icon">
-                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
-              </div>
-              <div class="photo-label">Foto profesional</div>
-              <div class="photo-sub">Próximamente</div>
+            <div class="monogram-frame">
+              <div class="monogram-snake" aria-hidden="true"></div>
+              <span class="monogram-os" aria-hidden="true">OS</span>
             </div>
             <div class="photo-frame-tag">
               <span>Director · Morphos</span>
@@ -340,9 +302,10 @@ import ServiceLinks from '../components/ServiceLinks.astro';
 
     <!-- ════ CTA FINAL ════ -->
     <section class="cta-final">
+      <div class="section-snake" aria-hidden="true" data-morph-bg></div>
       <div class="wrap cta-final-inner">
         <div class="cta-tag reveal">Próximo paso</div>
-        <h2 class="reveal reveal-delay-1">¿Listo para que el marketing<br>de tu empresa <em>funcione?</em></h2>
+        <h2 data-morph>¿Listo para que el marketing<br>de tu empresa <em>funcione?</em></h2>
         <p class="reveal reveal-delay-2">Una llamada de 30 minutos. Sin presentación de ventas. Solo las preguntas correctas y una respuesta honesta.</p>
         <div class="reveal reveal-delay-3">
           <a href="/agenda/" class="btn btn-primary btn-lg">

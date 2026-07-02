@@ -42,7 +42,7 @@ import ServiceLinks from '../components/ServiceLinks.astro';
     <!-- Base includes strip -->
     <section class="base-strip">
       <div class="wrap base-strip-inner">
-        <span class="base-strip-label">Todo retainer incluye</span>
+        <span class="base-strip-label">Todo plan mensual incluye</span>
         <div class="base-tags">
           <span class="base-tag">Google Ads</span>
           <span class="base-tag">Meta Ads</span>
@@ -58,7 +58,7 @@ import ServiceLinks from '../components/ServiceLinks.astro';
       <div class="wrap">
         <p class="f-body c-muted reveal" style="max-width:720px; margin:0 auto 40px; text-align:center;"><strong>Los montos son un punto de partida.</strong> Cada propuesta se cotiza a la medida de tu objetivo, mercado y alcance — el número final lo definimos juntos en la llamada.</p>
         <div class="packages">
-          <a href="/agenda/" class="pkg reveal">
+          <a href="/agenda/" class="pkg" data-morph>
             <div class="pkg-badge">Para empresas que inician</div>
             <div class="pkg-name">Esencial</div>
             <div class="pkg-price">Desde <strong>$12,000</strong> MXN/mes</div>
@@ -72,7 +72,7 @@ import ServiceLinks from '../components/ServiceLinks.astro';
             </ul>
             <div class="pkg-cta">Agendar llamada <span class="arrow">→</span></div>
           </a>
-          <a href="/agenda/" class="pkg pkg--featured reveal reveal-delay-1">
+          <a href="/agenda/" class="pkg pkg--featured" data-morph="0.12">
             <div class="pkg-badge">El más elegido</div>
             <div class="pkg-name">Crecimiento</div>
             <div class="pkg-price">Desde <strong>$18,000</strong> MXN/mes</div>
@@ -87,7 +87,7 @@ import ServiceLinks from '../components/ServiceLinks.astro';
             </ul>
             <div class="pkg-cta">Agenda tu llamada <span class="arrow">→</span></div>
           </a>
-          <a href="/agenda/" class="pkg reveal reveal-delay-2">
+          <a href="/agenda/" class="pkg" data-morph="0.24">
             <div class="pkg-badge">Para empresas ambiciosas</div>
             <div class="pkg-name">Escala</div>
             <div class="pkg-price">Desde <strong>$30,000</strong> MXN/mes</div>
@@ -116,7 +116,7 @@ import ServiceLinks from '../components/ServiceLinks.astro';
             <div class="f-label c-green" style="margin-bottom:16px;">Add-ons</div>
             <h2 class="f-h2" style="color:var(--white);">Servicios adicionales<br>a la carta.</h2>
           </div>
-          <p class="f-body c-muted" style="padding-top:8px;">Cada retainer incluye el core. Los add-ons se contratan según las necesidades de cada cliente — ninguno es obligatorio.</p>
+          <p class="f-body c-muted" style="padding-top:8px;">Cada plan mensual incluye el core. Los add-ons se contratan según las necesidades de cada cliente — ninguno es obligatorio.</p>
         </div>
         <div class="addons-catalog reveal reveal-delay-1">
           <div class="addon-row">
@@ -162,7 +162,7 @@ import ServiceLinks from '../components/ServiceLinks.astro';
             <div>
               <div class="addon-row-price">Cotización<span>independiente</span></div>
             </div>
-            <div class="addon-row-desc">ERP para integrar operaciones, ventas e inventario. Siempre es un proyecto separado con su propio contrato y timeline — nunca dentro del retainer.</div>
+            <div class="addon-row-desc">ERP para integrar operaciones, ventas e inventario. Siempre es un proyecto separado con su propio contrato y timeline — nunca dentro del plan mensual.</div>
           </div>
         </div>
       </div>
@@ -282,9 +282,10 @@ import ServiceLinks from '../components/ServiceLinks.astro';
 
     <!-- CTA -->
     <section class="cta-final">
+      <div class="section-snake" aria-hidden="true" data-morph-bg></div>
       <div class="wrap cta-final-inner">
         <div class="cta-tag reveal">Siguiente paso</div>
-        <h2 class="reveal reveal-delay-1">¿Ya encontraste<br>tu <em>paquete?</em></h2>
+        <h2 data-morph>¿Ya encontraste<br>tu <em>paquete?</em></h2>
         <p class="reveal reveal-delay-2">Agenda una llamada de 30 minutos y te decimos exactamente qué paquete tiene más sentido para tu empresa — sin compromiso.</p>
         <div class="reveal reveal-delay-3">
           <a href="/agenda/" class="btn btn-primary btn-lg">

@@ -122,7 +122,7 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
     let _once = false;
     let _firstPaint = true;
     let GSAP_ON = false;
-    let curNav, curHero, curHeroBody, curHeroBadge;
+    let curNav, curHero, curHeroBody;
     let revealObserver, counterObserver;
     let stFX = [];
 
@@ -237,6 +237,28 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
 
     function initScrollFX(scope) {
       if (!GSAP_ON) return;
+
+      // Signature motion "toma forma": blur amorfo → forma nítida.
+      // data-morph acepta un delay opcional en segundos (ej. data-morph="0.12").
+      scope.querySelectorAll('[data-morph]').forEach(el => {
+        const d = parseFloat(el.getAttribute('data-morph')) || 0;
+        stFX.push(window.gsap.from(el, {
+          filter: 'blur(14px)', opacity: 0, scaleX: 1.05, skewY: 2,
+          duration: 1, delay: d, ease: 'power3.out',
+          clearProps: 'filter,transform',
+          scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+        }));
+      });
+      // Variante para fondos (serpiente gigante): solo blur → nítida + opacidad a su valor CSS.
+      scope.querySelectorAll('[data-morph-bg]').forEach(el => {
+        stFX.push(window.gsap.from(el, {
+          filter: 'blur(18px)', opacity: 0,
+          duration: 1.4, ease: 'power3.out',
+          clearProps: 'filter',
+          scrollTrigger: { trigger: el.parentElement || el, start: 'top 80%', once: true }
+        }));
+      });
+
       const reveals = scope.querySelectorAll('.reveal');
       if (reveals.length) {
         window.gsap.set(reveals, { opacity: 0, y: 32 });
@@ -383,10 +405,8 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
         if (curNav) curNav.classList.toggle('scrolled', sy > 80);
         if (curHero && sy < curHero.offsetHeight) {
           if (curHeroBody) curHeroBody.style.transform = `translateY(${sy * 0.15}px)`;
-          if (curHeroBadge) curHeroBadge.style.transform = `translateY(${sy * 0.08}px)`;
         } else if (!curHero) {
           if (curHeroBody) curHeroBody.style.transform = '';
-          if (curHeroBadge) curHeroBadge.style.transform = '';
         }
       }, { passive: true });
 
@@ -420,7 +440,6 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
       curNav = document.getElementById('nav');
       curHero = document.querySelector('.hero');
       curHeroBody = document.querySelector('.hero-body');
-      curHeroBadge = document.querySelector('.hero-badge');
 
       // GA page_view manual (send_page_view:false en config)
       ev('page_view', { page_title: document.title, page_location: location.href });
@@ -444,7 +463,7 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
       if (GSAP_ON) {
         const heroHeadline = document.querySelector('.hero-headline');
         if (heroHeadline) {
-          const heroExtras = ['.hero-tag', '.hero-sub', '.hero-ctas', '.hero-note', '.scroll-hint', '.hero-badge'];
+          const heroExtras = ['.hero-tag', '.hero-sub', '.hero-ctas', '.hero-note', '.scroll-hint'];
           window.gsap.set(heroExtras, { autoAlpha: 0, y: 26 });
           // Primera carga: espera a que el telón se levante (1.45s). Navegaciones posteriores: arranca casi de inmediato.
           const heroDelay = _firstPaint ? 1.45 : 0.15;
@@ -457,7 +476,7 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
               .to('.hero-sub', { autoAlpha: 1, y: 0 }, 0.62)
               .to('.hero-ctas', { autoAlpha: 1, y: 0 }, 0.78)
               .to('.hero-note', { autoAlpha: 1, y: 0 }, 0.94)
-              .to(['.scroll-hint', '.hero-badge'], { autoAlpha: 1, y: 0 }, 1.05);
+              .to('.scroll-hint', { autoAlpha: 1, y: 0 }, 1.05);
           });
         }
         initScrollFX(document);

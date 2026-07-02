@@ -4,12 +4,11 @@
 interface Item { num: string; title: string; desc: string; }
 interface Props { items: Item[]; }
 const { items } = Astro.props;
-const delay = (i: number) => (i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-delay-2' : i === 3 ? ' reveal-delay-3' : '');
 ---
 <section class="lp-pillars">
   <div class="lp-pillars-grid">
     {items.map((it, i) => (
-      <div class={`lp-pillar reveal${delay(i)}`}>
+      <div class="lp-pillar" data-morph={String(i * 0.1)}>
         <div class="lp-pillar-num">{it.num}</div>
         <div class="lp-pillar-title">{it.title}</div>
         <div class="lp-pillar-desc">{it.desc}</div>
@@ -34,15 +33,14 @@ const delay = (i: number) => (i === 1 ? ' reveal-delay-1' : i === 2 ? ' reveal-d
   }
   .lp-pillar {
     background: #fff;
-    border: 1px solid rgba(13, 27, 42, 0.08);
-    border-radius: 16px;
+    border: 1px solid rgba(13, 27, 42, 0.12);
+    border-radius: 2px;
     padding: 30px 26px;
-    transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease), border-color 0.45s var(--ease);
+    transition: transform 0.45s var(--ease), border-color 0.45s var(--ease);
   }
   .lp-pillar:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 44px rgba(13, 27, 42, 0.10);
-    border-color: rgba(122, 158, 126, 0.5);
+    border-color: rgba(122, 158, 126, 0.7);
   }
   .lp-pillar-num {
     font-family: var(--serif, 'Playfair Display', serif);

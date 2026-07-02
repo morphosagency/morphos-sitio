@@ -6,10 +6,11 @@ import Base from '../layouts/Base.astro';
 
     <!-- ── 1. Hero editorial ── -->
     <section class="nos-hero">
+      <div class="section-snake" aria-hidden="true" data-morph-bg></div>
       <div class="wrap nos-hero-inner">
         <div>
           <div class="nos-hero-label">Quiénes somos</div>
-          <h1 class="nos-hero-name">Omar<br>Sandoval.</h1>
+          <h1 class="nos-hero-name">Omar<br><em class="f-serif-accent">Sandoval.</em></h1>
           <p class="nos-hero-statement">Fundador · Morphos Marketing · México</p>
         </div>
         <div>
@@ -22,25 +23,21 @@ import Base from '../layouts/Base.astro';
     <section class="nos-omar">
       <div class="wrap nos-omar-grid">
         <div class="nos-photo reveal">
-          <div class="nos-photo-frame">
-            <div class="nos-photo-icon">
-              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="8" r="4"/>
-                <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
-              </svg>
-            </div>
+          <div class="monogram-frame">
+            <div class="monogram-snake" aria-hidden="true"></div>
+            <span class="monogram-os" aria-hidden="true">OS</span>
           </div>
           <div class="nos-photo-tag">
             <div class="nos-photo-tag-dot"></div>
             <span class="nos-photo-tag-text">Omar Sandoval · Director, Morphos</span>
           </div>
         </div>
-        <div class="nos-content reveal reveal-delay-2">
-          <div class="nos-content-label">Quién está detrás</div>
-          <h2>Marketing B2B<br>con <em>criterio propio.</em></h2>
-          <p>Llevo más de 5 años ejecutando marketing para empresas B2B en México — desde PyMEs industriales hasta corporativos con operaciones en varios estados. He gestionado cuentas de Google Ads y Meta desde $5,000 hasta $500,000 USD al mes.</p>
-          <p>Fundé Morphos porque el mercado industrial en México merecía una agencia que realmente entienda sus ciclos de venta, sus compradores, y la diferencia entre un lead que califica y uno que no. La mayoría de las agencias ejecutan. Morphos piensa primero.</p>
-          <p>No trabajamos con todos. Elegimos clientes donde podemos generar impacto real — empresas con proceso de venta B2B, ciclo largo, y un tomador de decisión que valora la autonomía y los resultados medibles sobre la microgestión.</p>
+        <div class="nos-content">
+          <div class="nos-content-label reveal">Quién está detrás</div>
+          <h2 data-morph>Marketing B2B<br>con <em>criterio propio.</em></h2>
+          <p class="reveal">Llevo más de 5 años ejecutando marketing para empresas B2B en México — desde PyMEs industriales hasta corporativos con operaciones en varios estados. He gestionado cuentas de Google Ads y Meta desde $5,000 hasta $500,000 USD al mes.</p>
+          <p class="reveal reveal-delay-1">Fundé Morphos porque el mercado industrial en México merecía una agencia que realmente entienda sus ciclos de venta, sus compradores, y la diferencia entre un lead que califica y uno que no. La mayoría de las agencias ejecutan. Morphos piensa primero.</p>
+          <p class="reveal reveal-delay-2">No trabajamos con todos. Elegimos clientes donde podemos generar impacto real — empresas con proceso de venta B2B, ciclo largo, y un tomador de decisión que valora la autonomía y los resultados medibles sobre la microgestión.</p>
         </div>
       </div>
     </section>
@@ -72,12 +69,12 @@ import Base from '../layouts/Base.astro';
     <!-- ── 4. Filosofía ── -->
     <section class="nos-filosof">
       <div class="wrap">
-        <div class="nos-filosof-header reveal">
+        <div class="nos-filosof-header">
           <div>
-            <div class="nos-filosof-label">Cómo trabajamos</div>
-            <h2>Tres principios<br>que no <em>negociamos.</em></h2>
+            <div class="nos-filosof-label reveal">Cómo trabajamos</div>
+            <h2 data-morph>Tres principios<br>que no <em>negociamos.</em></h2>
           </div>
-          <p class="nos-filosof-sub">No son valores de empresa en una pared. Son las razones por las que algunos clientes son perfectos para nosotros — y otros no.</p>
+          <p class="nos-filosof-sub reveal">No son valores de empresa en una pared. Son las razones por las que algunos clientes son perfectos para nosotros — y otros no.</p>
         </div>
         <div class="nos-prins">
           <div class="nos-prin reveal">
@@ -102,10 +99,10 @@ import Base from '../layouts/Base.astro';
     <!-- ── 5. Con quién sí / con quién no ── -->
     <section class="nos-quien">
       <div class="wrap">
-        <div class="nos-quien-header reveal">
-          <div class="nos-quien-label">Calificación</div>
-          <h2>¿Somos la opción<br><em>correcta para ti?</em></h2>
-          <p class="nos-quien-sub">Preferimos decirlo antes de la llamada. Así ahorras tu tiempo — y el nuestro.</p>
+        <div class="nos-quien-header">
+          <div class="nos-quien-label reveal">Calificación</div>
+          <h2 data-morph>¿Somos la opción<br><em>correcta para ti?</em></h2>
+          <p class="nos-quien-sub reveal">Preferimos decirlo antes de la llamada. Así ahorras tu tiempo — y el nuestro.</p>
         </div>
         <div class="nos-table reveal reveal-delay-1">
           <div class="nos-col nos-col-si">
@@ -160,9 +157,10 @@ import Base from '../layouts/Base.astro';
 
     <!-- ── 6. CTA ── -->
     <section class="cta-final">
+      <div class="section-snake" aria-hidden="true" data-morph-bg></div>
       <div class="wrap cta-final-inner">
         <div class="cta-tag reveal">¿Encajamos?</div>
-        <h2 class="reveal reveal-delay-1">Si esto resuena<br>con lo que buscas, <em>hablemos.</em></h2>
+        <h2 data-morph>Si esto resuena<br>con lo que buscas, <em>hablemos.</em></h2>
         <p class="reveal reveal-delay-2">30 minutos. Sin deck de ventas. Solo una conversación honesta sobre si podemos ayudarte.</p>
         <div class="reveal reveal-delay-3">
           <a href="/agenda/" class="btn btn-primary btn-lg">

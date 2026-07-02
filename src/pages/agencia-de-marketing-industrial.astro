@@ -65,7 +65,7 @@ const faqs = [
           <div class="f-label c-green" style="margin-bottom:20px;">Marketing B2B Industrial</div>
           <h1 class="f-h1 c-white" style="overflow:hidden;">
             <span style="display:block; animation: lineUp 0.8s var(--ease) both;">Agencia de marketing</span>
-            <span style="display:block; animation: lineUp 0.8s 0.12s var(--ease) both;">industrial.</span>
+            <span style="display:block; animation: lineUp 0.8s 0.12s var(--ease) both;"><em class="f-serif-accent">industrial.</em></span>
           </h1>
           <p class="f-body" style="color:rgba(255,255,255,0.45); margin-top:24px; max-width:540px; animation: fadeUp 0.8s 0.3s var(--ease) both;">Generamos oportunidades de venta calificadas para empresas industriales mexicanas — manufactura, construcción, distribución e ingeniería. Estrategia y ejecución que entienden tu ciclo de venta, medidas en pipeline y no en likes. Sin microgestión.</p>
           <div style="margin-top:36px; animation: fadeUp 0.8s 0.45s var(--ease) both;">
@@ -184,9 +184,10 @@ const faqs = [
 
     <!-- CTA -->
     <section class="cta-final">
+      <div class="section-snake" aria-hidden="true" data-morph-bg></div>
       <div class="wrap cta-final-inner">
         <div class="cta-tag reveal">Siguiente paso</div>
-        <h2 class="reveal reveal-delay-1">¿Listo para un marketing<br>que <em>tu industria</em> entienda?</h2>
+        <h2 data-morph>¿Listo para un marketing<br>que <em>tu industria</em> entienda?</h2>
         <p class="reveal reveal-delay-2">Agenda 30 minutos con Omar. Sin presentación de ventas — un diagnóstico honesto de tu situación y si Morphos es el socio correcto para tu empresa industrial.</p>
         <div class="reveal reveal-delay-3">
           <a href="/agenda/" class="btn btn-primary btn-lg">
@@ -204,10 +205,9 @@ const faqs = [
     /* Definición a las tarjetas de "Cómo lo hacemos" (scoped: no afecta a Servicios) */
     .steps-row { gap: 22px; }
     .step-panel {
-      border: 1px solid rgba(13, 27, 42, 0.08);
+      border: 1px solid rgba(13, 27, 42, 0.12);
       border-top: 2px solid transparent;
-      border-radius: 16px;
-      box-shadow: 0 6px 24px rgba(13, 27, 42, 0.05);
+      border-radius: 2px;
     }
     .step-num { color: rgba(122, 158, 126, 0.9); }
     @media (max-width: 880px) {
