@@ -2228,3 +2228,10 @@
       .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
       .about-creds { grid-template-columns: 1fr; }
     }
+    /* Móvil: animaciones de entrada más cortas (el usuario móvil no espera) */
+    @media (max-width: 768px) {
+      .hero-tag { animation-duration: 0.5s; animation-delay: 0.05s; }
+      .line-wrap .line { animation-duration: 0.55s; }
+      .line-wrap:nth-child(1) .line { animation-delay: 0.1s; }
+      .line-wrap:nth-child(2) .line { animation-delay: 0.18s; }
+    }

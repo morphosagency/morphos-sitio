@@ -237,6 +237,8 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
 
     function initScrollFX(scope) {
       if (!GSAP_ON) return;
+      // Móvil: el usuario scrollea más rápido — animaciones más cortas y triggers más tempranos
+      const M = window.matchMedia('(max-width: 768px)').matches;
 
       // Signature motion "toma forma": blur amorfo → forma nítida.
       // data-morph acepta un delay opcional en segundos (ej. data-morph="0.12").
@@ -244,18 +246,18 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
         const d = parseFloat(el.getAttribute('data-morph')) || 0;
         stFX.push(window.gsap.from(el, {
           filter: 'blur(14px)', opacity: 0, scaleX: 1.05, skewY: 2,
-          duration: 1, delay: d, ease: 'power3.out',
+          duration: M ? 0.55 : 1, delay: M ? d * 0.5 : d, ease: 'power3.out',
           clearProps: 'filter,transform',
-          scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+          scrollTrigger: { trigger: el, start: M ? 'top 92%' : 'top 85%', once: true }
         }));
       });
       // Variante para fondos (serpiente gigante): solo blur → nítida + opacidad a su valor CSS.
       scope.querySelectorAll('[data-morph-bg]').forEach(el => {
         stFX.push(window.gsap.from(el, {
           filter: 'blur(18px)', opacity: 0,
-          duration: 1.4, ease: 'power3.out',
+          duration: M ? 0.8 : 1.4, ease: 'power3.out',
           clearProps: 'filter',
-          scrollTrigger: { trigger: el.parentElement || el, start: 'top 80%', once: true }
+          scrollTrigger: { trigger: el.parentElement || el, start: M ? 'top 88%' : 'top 80%', once: true }
         }));
       });
 
@@ -263,8 +265,8 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
       if (reveals.length) {
         window.gsap.set(reveals, { opacity: 0, y: 32 });
         stFX = stFX.concat(window.ScrollTrigger.batch(reveals, {
-          start: 'top 88%', once: true,
-          onEnter: batch => window.gsap.to(batch, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out', stagger: 0.09, overwrite: true })
+          start: M ? 'top 93%' : 'top 88%', once: true,
+          onEnter: batch => window.gsap.to(batch, { opacity: 1, y: 0, duration: M ? 0.5 : 0.8, ease: 'power3.out', stagger: M ? 0.05 : 0.09, overwrite: true })
         }));
       }
       scope.querySelectorAll('.counter').forEach(el => {
@@ -469,14 +471,16 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
           const heroDelay = _firstPaint ? 1.45 : 0.15;
           Promise.race([document.fonts.ready, new Promise(r => setTimeout(r, 1200))]).then(() => {
             if (!document.querySelector('.hero-headline .line')) return;
+            const M = window.matchMedia('(max-width: 768px)').matches;
+            const f = M ? 0.55 : 1; // factor móvil: secuencia ~45% más corta
             const split = window.SplitText.create('.hero-headline .line', { type: 'words,chars' });
-            window.gsap.timeline({ delay: heroDelay, defaults: { ease: 'power3.out', duration: 0.7 } })
-              .from(split.chars, { yPercent: 115, duration: 0.9, ease: 'power4.out', stagger: 0.016 })
-              .to('.hero-tag', { autoAlpha: 1, y: 0 }, 0.1)
-              .to('.hero-sub', { autoAlpha: 1, y: 0 }, 0.62)
-              .to('.hero-ctas', { autoAlpha: 1, y: 0 }, 0.78)
-              .to('.hero-note', { autoAlpha: 1, y: 0 }, 0.94)
-              .to('.scroll-hint', { autoAlpha: 1, y: 0 }, 1.05);
+            window.gsap.timeline({ delay: heroDelay, defaults: { ease: 'power3.out', duration: 0.7 * f } })
+              .from(split.chars, { yPercent: 115, duration: 0.9 * f, ease: 'power4.out', stagger: 0.016 * f })
+              .to('.hero-tag', { autoAlpha: 1, y: 0 }, 0.1 * f)
+              .to('.hero-sub', { autoAlpha: 1, y: 0 }, 0.62 * f)
+              .to('.hero-ctas', { autoAlpha: 1, y: 0 }, 0.78 * f)
+              .to('.hero-note', { autoAlpha: 1, y: 0 }, 0.94 * f)
+              .to('.scroll-hint', { autoAlpha: 1, y: 0 }, 1.05 * f);
           });
         }
         initScrollFX(document);
