@@ -285,16 +285,43 @@ const { title, description, canonical, ogImage = 'https://www.morphosagency.com/
 
     // Calendly: init explícito y robusto. Garantiza que el widget SIEMPRE se dibuje,
     // sin importar si se llegó por carga directa o por navegación (View Transitions).
+    // Atribución: captura gclid/fbclid/utm de la URL de aterrizaje y los persiste en
+    // sessionStorage (sobreviven la navegación interna con View Transitions). Devuelve lo guardado.
+    // Defensivo: si no hay params o sessionStorage falla, devuelve {} y todo sigue igual.
+    function getAttribution() {
+      const keys = ['gclid','fbclid','utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+      const out = {};
+      try {
+        const p = new URLSearchParams(location.search);
+        keys.forEach(k => { const v = p.get(k); if (v) sessionStorage.setItem('attr_' + k, v); });
+        keys.forEach(k => { const v = sessionStorage.getItem('attr_' + k); if (v) out[k] = v; });
+      } catch (e) { /* sessionStorage bloqueado: sin atribución, el widget funciona igual */ }
+      return out;
+    }
+
     function initCalendly() {
       const cal = document.getElementById('calendlyWidget');
       if (!cal) return;
       if (cal.dataset.calInit === '1' || cal.querySelector('iframe')) return; // ya iniciado/iniciando
-      const url = cal.getAttribute('data-cal-url');
+      let url = cal.getAttribute('data-cal-url');
       if (!url) return;
+      // Inyectar atribución: gclid/fbclid van en la URL (Calendly los preserva en el evento);
+      // los utm_* van en el objeto utm nativo de Calendly (aparecen en cada cita reservada).
+      const a = getAttribution();
+      const extra = [];
+      if (a.gclid) extra.push('gclid=' + encodeURIComponent(a.gclid));
+      if (a.fbclid) extra.push('fbclid=' + encodeURIComponent(a.fbclid));
+      if (extra.length) url += (url.indexOf('?') > -1 ? '&' : '?') + extra.join('&');
+      const utm = {};
+      if (a.utm_source)   utm.utmSource   = a.utm_source;
+      if (a.utm_medium)   utm.utmMedium   = a.utm_medium;
+      if (a.utm_campaign) utm.utmCampaign = a.utm_campaign;
+      if (a.utm_content)  utm.utmContent  = a.utm_content;
+      if (a.utm_term)     utm.utmTerm     = a.utm_term;
       cal.dataset.calInit = '1'; // marca síncrona → ninguna segunda llamada puede duplicar
       (function tryInit(attempt) {
         if (window.Calendly && typeof window.Calendly.initInlineWidget === 'function') {
-          window.Calendly.initInlineWidget({ url, parentElement: cal });
+          window.Calendly.initInlineWidget({ url, parentElement: cal, utm });
         } else if (attempt < 40) {
           setTimeout(() => tryInit(attempt + 1), 100); // espera a widget.js (máx ~4s)
         }
