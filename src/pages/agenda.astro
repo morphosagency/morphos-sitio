@@ -39,11 +39,15 @@ import Base from '../layouts/Base.astro';
             </div>
 
             <div class="agd-btn-wrap">
-              <a href="https://calendly.com/omar-morphosagency/30min" target="_blank" rel="noopener" class="btn btn-primary btn-lg">
+              <!-- Ancla al embed (misma página): la reserva ocurre EN el sitio → GA4 sí ve el
+                   generate_lead (calendly.event_scheduled solo dispara en el embed — fix 11 ago,
+                   caso real: reserva invisible del 10 ago). La liga externa queda como fallback
+                   CON UTMs para que Calendly guarde el origen aunque GA4 no lo vea. -->
+              <a href="#calendlyWidget" class="btn btn-primary btn-lg">
                 <span>Selecciona fecha y hora</span>
                 <span class="arrow">→</span>
               </a>
-              <p class="cta-note" style="text-align:left; margin-top:16px; color:rgba(255,255,255,0.2);">Sesión 1 a 1 con Omar · 30 minutos · Sin compromiso</p>
+              <p class="cta-note" style="text-align:left; margin-top:16px; color:rgba(255,255,255,0.2);">Sesión 1 a 1 con Omar · 30 minutos · Sin compromiso · <a href="https://calendly.com/omar-morphosagency/30min?utm_source=morphosagency&utm_medium=sitio&utm_campaign=agenda-fallback" target="_blank" rel="noopener" style="color:rgba(255,255,255,0.35);text-decoration:underline;">abrir en otra pestaña</a></p>
             </div>
           </div>
 
