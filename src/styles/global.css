@@ -827,6 +827,7 @@
         linear-gradient(rgba(122,158,126,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(122,158,126,0.03) 1px, transparent 1px);
       background-size: 80px 80px;
+      pointer-events: none;
     }
     .addons .wrap { position: relative; z-index: 1; }
     .addons-header { margin-bottom: 56px; }
@@ -911,6 +912,7 @@
         linear-gradient(rgba(122,158,126,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(122,158,126,0.03) 1px, transparent 1px);
       background-size: 80px 80px;
+      pointer-events: none;
     }
     .case-inner { position: relative; z-index: 1; }
     .case-header {
@@ -1073,6 +1075,7 @@
         linear-gradient(rgba(122,158,126,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(122,158,126,0.03) 1px, transparent 1px);
       background-size: 80px 80px;
+      pointer-events: none;
     }
     .agenda-inner {
       position: relative; z-index: 1;
@@ -1105,6 +1108,7 @@
     .agd-section::before {
       content: ''; position: absolute; inset: 0;
       background: radial-gradient(ellipse at 30% 50%, rgba(122,158,126,0.07) 0%, transparent 60%);
+      pointer-events: none;
     }
     .agd-section::after {
       content: ''; position: absolute; inset: 0;
@@ -1112,6 +1116,7 @@
         linear-gradient(rgba(122,158,126,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(122,158,126,0.03) 1px, transparent 1px);
       background-size: 80px 80px;
+      pointer-events: none;
     }
     .agd-inner {
       position: relative; z-index: 1;
@@ -1300,6 +1305,7 @@
         linear-gradient(rgba(122,158,126,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(122,158,126,0.03) 1px, transparent 1px);
       background-size: 80px 80px;
+      pointer-events: none;
     }
     .srv-hero-inner { position: relative; z-index: 1; }
     .srv-hero-bg-num {
@@ -1355,6 +1361,7 @@
         linear-gradient(rgba(122,158,126,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(122,158,126,0.03) 1px, transparent 1px);
       background-size: 80px 80px;
+      pointer-events: none;
     }
     .addons-catalog-section .wrap { position: relative; z-index: 1; }
     .addons-catalog-header {
@@ -1499,6 +1506,7 @@
         linear-gradient(rgba(122,158,126,0.03) 1px, transparent 1px),
         linear-gradient(90deg, rgba(122,158,126,0.03) 1px, transparent 1px);
       background-size: 80px 80px;
+      pointer-events: none;
     }
     .res-hero-inner { position: relative; z-index: 1; }
     .res-hero-num {
