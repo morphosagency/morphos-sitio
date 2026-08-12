@@ -61,8 +61,85 @@ import Base from '../layouts/Base.astro';
           </div>
 
         </div>
+
+        <!-- Vía 2: formulario de baja fricción (intención tibia — quien no quiere llamada aún).
+             Backend: Formspree. Atribución: hidden fields desde sessionStorage (attr_* que ya
+             persiste Base.astro). GA4: generate_lead method:form al éxito. -->
+        <div class="agd-form-wrap">
+          <div class="agd-form-head">
+            <div class="agd-label">¿Aún no quieres agendar llamada?</div>
+            <p class="agd-form-sub">Déjanos tus datos y te escribimos nosotros — sin llamada, sin compromiso.</p>
+            <p class="agd-form-sub" style="margin-top:6px;">Si nos dejas tu sitio web, llegamos a la conversación ya con la tarea hecha.</p>
+          </div>
+          <form id="agdForm" method="POST" action="https://formspree.io/f/xqpzqovo" novalidate>
+            <div class="agd-form-grid">
+              <input type="text" name="nombre" placeholder="Tu nombre *" required autocomplete="name">
+              <input type="text" name="empresa" placeholder="Empresa *" required autocomplete="organization">
+              <input type="email" name="correo" placeholder="Correo *" required autocomplete="email">
+              <input type="tel" name="whatsapp" placeholder="WhatsApp (opcional)" autocomplete="tel">
+              <input type="url" name="sitio_web" placeholder="Sitio web de tu empresa (opcional)" autocomplete="url" class="agd-span2">
+            </div>
+            <textarea name="mensaje" rows="2" placeholder="¿Qué necesitas resolver? (opcional)"></textarea>
+            <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+            <input type="hidden" name="pagina" value="/agenda/">
+            <input type="hidden" name="atribucion" id="agdAttr" value="">
+            <button type="submit" class="btn btn-primary">Enviar — te escribimos en menos de 1 día hábil</button>
+            <p class="agd-form-ok" id="agdFormOk" hidden>Listo, nos llegó. Te escribimos en menos de 1 día hábil — revisa también tu WhatsApp si lo dejaste. 🤝</p>
+            <p class="agd-form-err" id="agdFormErr" hidden>Algo falló al enviar. Escríbenos directo a <a href="mailto:info@morphosagency.com">info@morphosagency.com</a> mientras lo revisamos.</p>
+          </form>
+        </div>
+
       </div>
     </section>
 
   </div>
+
+  <style>
+    .agd-form-wrap { margin: 72px 0 0; padding: 44px 0 0; border-top: 1px solid rgba(255,255,255,0.10); display: grid; grid-template-columns: 0.9fr 1.5fr; gap: 48px; align-items: start; }
+    .agd-form-head { margin-bottom: 0; }
+    .agd-form-sub { color: rgba(255,255,255,0.55); margin-top: 10px; font-size: 0.95rem; max-width: 34ch; }
+    .agd-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+    .agd-span2 { grid-column: 1 / -1; }
+    #agdForm input, #agdForm textarea { width: 100%; padding: 13px 14px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.14); border-radius: 8px; color: var(--white); font: inherit; font-size: 0.95rem; }
+    #agdForm input::placeholder, #agdForm textarea::placeholder { color: rgba(255,255,255,0.38); }
+    #agdForm input:focus, #agdForm textarea:focus { outline: 2px solid var(--green); outline-offset: 1px; border-color: transparent; }
+    #agdForm textarea { margin-bottom: 14px; resize: vertical; }
+    .agd-form-ok { color: var(--green); margin-top: 14px; }
+    .agd-form-err { color: #e08585; margin-top: 14px; }
+    .agd-form-err a { color: inherit; text-decoration: underline; }
+    @media (max-width: 900px) { .agd-form-wrap { grid-template-columns: 1fr; gap: 22px; } }
+    @media (max-width: 640px) { .agd-form-grid { grid-template-columns: 1fr; } }
+  </style>
+
+  <script>
+    // Formulario de baja fricción: atribución + envío AJAX + GA4. Defensivo: si JS falla,
+    // el form hace POST normal a Formspree (progressive enhancement).
+    function agdFormInit() {
+      const f = document.getElementById('agdForm');
+      if (!f || f.dataset.init === '1') return;
+      f.dataset.init = '1';
+      // atribución desde sessionStorage (la persiste Base.astro en cada aterrizaje)
+      try {
+        const keys = ['gclid','fbclid','utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+        const attr = keys.map(k => { const v = sessionStorage.getItem('attr_' + k); return v ? (k + '=' + v) : null; }).filter(Boolean).join(' | ');
+        const h = document.getElementById('agdAttr'); if (h) h.value = attr || 'directo/organico (sin params)';
+      } catch (e) {}
+      f.addEventListener('submit', async (ev) => {
+        ev.preventDefault();
+        const ok = document.getElementById('agdFormOk'), err = document.getElementById('agdFormErr');
+        ok.hidden = true; err.hidden = true;
+        if (!f.reportValidity()) return;
+        const btn = f.querySelector('button[type=submit]'); btn.disabled = true;
+        try {
+          const r = await fetch(f.action, { method: 'POST', body: new FormData(f), headers: { 'Accept': 'application/json' } });
+          if (!r.ok) throw new Error('status ' + r.status);
+          f.querySelectorAll('input:not([type=hidden]):not([name=_gotcha]), textarea').forEach(el => el.value = '');
+          ok.hidden = false; btn.disabled = false;
+          if (typeof window.gtag === 'function') window.gtag('event', 'generate_lead', { method: 'form', value: 1, currency: 'MXN' });
+        } catch (e) { err.hidden = false; btn.disabled = false; }
+      });
+    }
+    agdFormInit();
+    document.addEventListener('astro:page-load', agdFormInit);
+  </script>
 </Base>
