@@ -87,10 +87,37 @@ import Base from '../layouts/Base.astro';
             <p class="agd-form-ok" id="agdFormOk" hidden>Listo, nos llegó. Te escribimos en menos de 1 día hábil.</p>
             <p class="agd-form-err" id="agdFormErr" hidden>Algo falló al enviar. Escríbenos directo a <a href="mailto:info@morphosagency.com">info@morphosagency.com</a> mientras lo revisamos.</p>
           </form>
+
+          <!-- Vía 3: WhatsApp directo (la de menor fricción). NO burbuja flotante — opción
+               deliberada. wa.me con mensaje pre-llenado. GA4: whatsapp_click. -->
+          <p class="agd-wa-line">
+            ¿Prefieres WhatsApp?
+            <a id="agdWa" href="https://wa.me/528132747842?text=Hola%2C%20vengo%20del%20sitio%20de%20Morphos%20y%20me%20interesa%20platicar%20sobre%20marketing%20para%20mi%20empresa." target="_blank" rel="noopener">Escríbenos directo &rarr;</a>
+          </p>
         </div>
 
       </div>
     </section>
+
+  <style>
+    .agd-wa-line { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); color: rgba(255,255,255,0.55); font-size: 0.95rem; }
+    .agd-wa-line a { color: var(--green); text-decoration: none; font-weight: 600; }
+    .agd-wa-line a:hover { text-decoration: underline; }
+  </style>
+
+  <script>
+    // GA4 whatsapp_click en el enlace de WhatsApp de /agenda
+    function agdWaInit() {
+      const a = document.getElementById('agdWa');
+      if (!a || a.dataset.init === '1') return;
+      a.dataset.init = '1';
+      a.addEventListener('click', () => {
+        if (typeof window.gtag === 'function') window.gtag('event', 'whatsapp_click', { source: 'agenda' });
+      });
+    }
+    agdWaInit();
+    document.addEventListener('astro:page-load', agdWaInit);
+  </script>
 
   </div>
 
